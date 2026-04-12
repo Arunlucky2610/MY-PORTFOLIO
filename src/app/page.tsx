@@ -1,13 +1,16 @@
 "use client";
 
-import Hero from "@/components/sections/Hero";
-import About from "@/components/sections/About";
-import Skills from "@/components/sections/Skills";
-import Projects from "@/components/sections/Projects";
-import Dashboard from "@/components/sections/Dashboard";
-import Experience from "@/components/sections/Experience";
-import ONG from "@/components/sections/ONG";
-import Contact from "@/components/sections/Contact";
+import dynamic from "next/dynamic";
+import { Suspense } from "react";
+
+// Dynamic imports with ssr: false for 3D components
+const Hero = dynamic(() => import("@/components/sections/Hero"), { ssr: false });
+const About = dynamic(() => import("@/components/sections/About"), { ssr: false });
+const Skills = dynamic(() => import("@/components/sections/Skills"), { ssr: false });
+const Projects = dynamic(() => import("@/components/sections/Projects"), { ssr: false });
+const Dashboard = dynamic(() => import("@/components/sections/Dashboard"), { ssr: false });
+const Experience = dynamic(() => import("@/components/sections/Experience"), { ssr: false });
+const Contact = dynamic(() => import("@/components/sections/Contact"), { ssr: false });
 
 export default function Home() {
 
@@ -36,13 +39,27 @@ export default function Home() {
         </div>
       </nav>
 
-      <Hero />
-      <About />
-      <Skills />
-      <Projects />
-      <Dashboard />
-      <Experience />
-      <Contact />
+      <Suspense fallback={<div className="min-h-screen" />}>
+        <Hero />
+      </Suspense>
+      <Suspense fallback={<div className="min-h-screen" />}>
+        <About />
+      </Suspense>
+      <Suspense fallback={<div className="min-h-screen" />}>
+        <Skills />
+      </Suspense>
+      <Suspense fallback={<div className="min-h-screen" />}>
+        <Projects />
+      </Suspense>
+      <Suspense fallback={<div className="min-h-screen" />}>
+        <Dashboard />
+      </Suspense>
+      <Suspense fallback={<div className="min-h-screen" />}>
+        <Experience />
+      </Suspense>
+      <Suspense fallback={<div className="min-h-screen" />}>
+        <Contact />
+      </Suspense>
 
       <footer className="w-full text-center py-12 border-t border-slate-700 mt-20 relative z-10">
          <div className="container mx-auto px-6">
