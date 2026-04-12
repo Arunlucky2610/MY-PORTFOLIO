@@ -3,34 +3,14 @@
 import { useRef, useEffect } from "react";
 import Image from "next/image";
 import { motion } from "framer-motion";
-import { Canvas, useFrame } from "@react-three/fiber";
-import { Sphere, MeshDistortMaterial, OrbitControls, Environment } from "@react-three/drei";
+import dynamic from "next/dynamic";
 import { gsap } from "gsap";
-import * as THREE from "three";
 
-function AnimatedSphere() {
-  const meshRef = useRef<THREE.Mesh>(null);
-
-  useFrame((state) => {
-    if (meshRef.current) {
-      meshRef.current.rotation.x = state.clock.getElapsedTime() * 0.2;
-      meshRef.current.rotation.y = state.clock.getElapsedTime() * 0.3;
-    }
-  });
-
-  return (
-    <Sphere ref={meshRef} args={[1, 64, 64]} scale={1.5}>
-      <MeshDistortMaterial
-        color="#8b5cf6"
-        attach="material"
-        distort={0.4}
-        speed={2}
-        roughness={0.2}
-        metalness={0.8}
-      />
-    </Sphere>
-  );
-}
+// Dynamically import Canvas3D to prevent SSR issues
+const Canvas3D = dynamic(() => import("@/components/layout/Canvas3D"), { 
+  ssr: false,
+  loading: () => <div className="w-full h-full bg-gradient-to-b from-background/50 to-background" />
+});
 
 export default function Hero() {
   const subtitleRef = useRef<HTMLParagraphElement>(null);
@@ -62,13 +42,7 @@ export default function Hero() {
     <section className="relative min-h-screen w-full flex items-center justify-center overflow-hidden pt-40 pb-20">
       {/* Background 3D Canvas */}
       <div className="absolute inset-0 z-0 opacity-60">
-        <Canvas>
-          <ambientLight intensity={0.5} />
-          <directionalLight position={[2, 5, 2]} intensity={1} />
-          <Environment preset="city" />
-          <AnimatedSphere />
-          <OrbitControls enableZoom={false} enablePan={false} autoRotate autoRotateSpeed={0.5} />
-        </Canvas>
+        <Canvas3D />
       </div>
 
       <div className="relative z-10 container mx-auto px-6 flex flex-col items-center justify-center text-center">
