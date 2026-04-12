@@ -37,7 +37,7 @@ export default function Hero() {
 
   useEffect(() => {
     if (subtitleRef.current) {
-      const text = "Data Analyst | Backend Developer | Hackathon Finalist";
+      const text = "Full Stack Developer | AI Agent Builder | AI/ML Enthusiast | Data Analyst | Statathon 2025 Finalist";
       subtitleRef.current.innerHTML = "";
       
       const chars = text.split("");
@@ -59,7 +59,7 @@ export default function Hero() {
   }, []);
 
   return (
-    <section className="relative h-screen w-full flex items-center justify-center overflow-hidden">
+    <section className="relative min-h-screen w-full flex items-center justify-center overflow-hidden pt-40 pb-20">
       {/* Background 3D Canvas */}
       <div className="absolute inset-0 z-0 opacity-60">
         <Canvas>
@@ -104,7 +104,7 @@ export default function Hero() {
           >
             <motion.div 
               animate={{ 
-                rotation: [0, 2, -2, 0],
+                rotate: [0, 2, -2, 0],
                 scale: [1, 1.02, 0.98, 1]
               }}
               transition={{ duration: 4, repeat: Infinity }}
@@ -115,11 +115,134 @@ export default function Hero() {
               <motion.div
                 animate={{ x: ["-100%", "100%"] }}
                 transition={{ duration: 2, repeat: Infinity }}
-                className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent opacity-0 group-hover:opacity-100"
               />
             </motion.div>
           </motion.div>
         </motion.div>
+
+        {/* Floating Technical Elements - Positioned on sides */}
+        {/* Removed for cleaner design */}
+
+        {/* Corner accent elements */}
+        <motion.div
+          animate={{ rotate: 360 }}
+          transition={{ duration: 8, repeat: Infinity, ease: "linear" }}
+          className="absolute -top-20 -left-20 w-32 h-32 border border-purple-400/20 rounded-full"
+        />
+        <motion.div
+          animate={{ rotate: -360 }}
+          transition={{ duration: 10, repeat: Infinity, ease: "linear" }}
+          className="absolute -bottom-20 -right-20 w-40 h-40 border border-cyan-400/20 rounded-full"
+        />
+
+        {/* Featured Tech Icons in Workspace */}
+        {[
+          { icon: '🐍', label: 'Python', top: '15%', left: '8%', delay: 0 },
+          { icon: '⚛️', label: 'React', top: '20%', right: '9%', delay: 0.2 },
+          { icon: '🔷', label: 'Django', top: '70%', left: '10%', delay: 0.4 },
+          { icon: '🌶️', label: 'Flask', top: '72%', right: '11%', delay: 0.6 },
+          { icon: '🟩', label: 'Node.js', top: '42%', right: '6%', delay: 0.8 },
+        ].map((tech, index) => (
+          <motion.div
+            key={index}
+            animate={{
+              y: [0, -15, 0],
+              rotate: [0, 360],
+            }}
+            transition={{
+              duration: 5 + index * 0.5,
+              repeat: Infinity,
+              ease: "easeInOut",
+              delay: tech.delay,
+            }}
+            whileHover={{
+              scale: 1.25,
+              boxShadow: "0 0 30px rgba(139, 92, 246, 0.8)",
+            }}
+            className="absolute group cursor-pointer"
+            style={{
+              top: tech.top,
+              left: tech.left,
+              right: tech.right,
+            }}
+          >
+            {/* Glowing circle background */}
+            <motion.div
+              animate={{
+                boxShadow: [
+                  "0 0 15px rgba(139, 92, 246, 0.4)",
+                  "0 0 35px rgba(6, 182, 212, 0.7)",
+                  "0 0 15px rgba(139, 92, 246, 0.4)",
+                ],
+              }}
+              transition={{ duration: 2, repeat: Infinity }}
+              className="absolute inset-0 rounded-full bg-gradient-to-br from-purple-500/25 to-cyan-500/25"
+              style={{ width: '70px', height: '70px' }}
+            />
+
+            {/* Icon container */}
+            <div className="relative w-16 h-16 rounded-full bg-gradient-to-br from-purple-600/50 to-cyan-600/50 border-2 border-purple-400/70 backdrop-blur-md flex items-center justify-center text-3xl group-hover:border-cyan-400 transition-all duration-300">
+              {tech.icon}
+            </div>
+
+            {/* Label tooltip */}
+            <motion.div
+              initial={{ opacity: 0, y: 10 }}
+              whileHover={{ opacity: 1, y: -35 }}
+              transition={{ duration: 0.2 }}
+              className="absolute left-1/2 -translate-x-1/2 px-3 py-1 bg-purple-600/90 backdrop-blur-md rounded-full text-white text-xs font-semibold whitespace-nowrap"
+            >
+              {tech.label}
+            </motion.div>
+
+            {/* Pulse ring */}
+            <motion.div
+              animate={{
+                scale: [1, 1.6, 2.2],
+                opacity: [1, 0.5, 0],
+              }}
+              transition={{
+                duration: 2.5,
+                repeat: Infinity,
+                delay: tech.delay,
+              }}
+              className="absolute inset-0 rounded-full border-2 border-cyan-400/60"
+              style={{ width: '70px', height: '70px' }}
+            />
+          </motion.div>
+        ))}
+
+        {/* Animated connecting lines */}
+        <svg className="absolute inset-0 w-full h-full pointer-events-none" style={{ filter: 'drop-shadow(0 0 2px rgba(139, 92, 246, 0.3))' }}>
+          <motion.circle
+            cx="50%"
+            cy="50%"
+            r="80"
+            fill="none"
+            stroke="url(#gradient)"
+            strokeWidth="1"
+            opacity="0.3"
+            animate={{ r: [80, 100, 80] }}
+            transition={{ duration: 4, repeat: Infinity }}
+          />
+          <motion.circle
+            cx="50%"
+            cy="50%"
+            r="120"
+            fill="none"
+            stroke="url(#gradient)"
+            strokeWidth="0.5"
+            opacity="0.2"
+            animate={{ r: [120, 140, 120] }}
+            transition={{ duration: 6, repeat: Infinity, delay: 1 }}
+          />
+          <defs>
+            <linearGradient id="gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" stopColor="#8b5cf6" />
+              <stop offset="100%" stopColor="#06b6d4" />
+            </linearGradient>
+          </defs>
+        </svg>
 
         <motion.h1 
           className="text-5xl md:text-8xl font-extrabold tracking-tight mb-4"
@@ -132,11 +255,11 @@ export default function Hero() {
 
         <p 
           ref={subtitleRef} 
-          className="text-xl md:text-2xl text-gray-300 font-medium h-8 mb-10"
+          className="text-xl md:text-2xl text-gray-300 font-medium mb-12"
         />
 
         <motion.div 
-          className="flex flex-col sm:flex-row gap-4"
+          className="flex flex-col sm:flex-row gap-4 mb-20"
           initial={{ y: 20, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
           transition={{ duration: 0.5, delay: 1 }}
@@ -147,6 +270,38 @@ export default function Hero() {
           <a href="#contact" className="px-8 py-3 rounded-full glass glass-hover text-white font-semibold flex justify-center items-center">
             Contact Me
           </a>
+        </motion.div>
+
+        {/* AI Agent Builder Badge - Positioned Below Buttons */}
+        <motion.div
+          initial={{ scale: 0.8, opacity: 0, y: 10 }}
+          animate={{ scale: 1, opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, delay: 1.2 }}
+        >
+          <div className="inline-block">
+            <motion.div
+              animate={{
+                boxShadow: [
+                  "0 0 20px rgba(139, 92, 246, 0.5)",
+                  "0 0 40px rgba(168, 85, 247, 0.8)",
+                  "0 0 20px rgba(139, 92, 246, 0.5)"
+                ]
+              }}
+              transition={{ duration: 2, repeat: Infinity }}
+              className="px-6 py-3 rounded-full bg-gradient-to-r from-purple-600/30 to-cyan-600/30 border-2 border-purple-500/70 backdrop-blur-md hover:border-cyan-400 transition-all duration-300 cursor-pointer"
+            >
+              <div className="flex items-center gap-2">
+                <span className="text-2xl">🤖</span>
+                <span className="font-bold text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-cyan-400">
+                  AI Agent Builder
+                </span>
+                <span className="ml-2 px-3 py-1 rounded-full bg-purple-500/50 text-sm font-semibold text-white">
+                  Featured
+                </span>
+              </div>
+              <p className="text-sm text-gray-300 mt-1">Survey AI Agent • LLM Integration • ML Predictive Analytics</p>
+            </motion.div>
+          </div>
         </motion.div>
       </div>
       

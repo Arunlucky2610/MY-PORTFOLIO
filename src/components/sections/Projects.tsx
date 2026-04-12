@@ -2,28 +2,77 @@
 
 import { motion } from "framer-motion";
 import { Code, ExternalLink } from "lucide-react";
+import Image from "next/image";
 
-const projects = [
+type ProjectType = {
+  title: string;
+  description: string;
+  image?: string;
+  fullDetails?: {
+    problem: string;
+    solution: string;
+    impact: string;
+  };
+  highlights?: string[];
+  features?: string[];
+  tags: string[];
+  github: string;
+  live: string;
+  featured: boolean;
+};
+
+const projects: ProjectType[] = [
   {
-    title: "MoSPI Data Portal",
-    description: "An advanced data visualization and analytics portal. Provides seamless APIs and beautiful representation of critical government statistics.",
-    tags: ["FastAPI", "React", "PostgreSQL", "Recharts"],
-    github: "#",
+    title: "MoSPI Data Portal (Mopsi)",
+    description: "AI-powered intelligent data platform serving Ministry of Statistics & Programme Implementation. Beyond dashboards—built a Survey AI Agent that doesn't just provide data access, it **understands, predicts, and recommends**. Users ask in plain English, LLMs convert to SQL, ML models analyze patterns and detect anomalies. Processes 415K+ government records with conversational AI querying, predictive analytics, and autonomous insights generation.",
+    image: "/mospi-portal.png",
+    fullDetails: {
+      problem: "Government statistical data was fragmented and inaccessible. Manual analysis required hours of SQL queries. Real challenge: extracting meaning, patterns, and future insights from massive survey datasets to guide policy decisions.",
+      solution: "Built a Production AI System Architecture: Intelligent Survey Agent powered by LLMs for natural language understanding + ML prediction models for trend forecasting. Combines FastAPI backend, PostgreSQL data warehouse, and React frontend with conversational AI interface. Automated data-to-insights pipeline with multi-dimensional filtering, role-based access, and real-time analytics.",
+      impact: "Reduced analysis time from **hours to seconds**. Researchers, policymakers, and citizens now ask questions in plain English and get instant visual insights + AI-powered recommendations. 100K+ dataset integration enables data-driven decision making at scale.",
+    },
+    highlights: [
+      "🤖 AI Survey Agent (LLM-powered natural language querying)",
+      "📊 415K+ Government Records with ML Analysis",
+      "🧠 Predictive Models for Trend Forecasting",
+      "🔍 Pattern Detection & Anomaly Identification",
+      "💡 Autonomous Insights & Recommendations",
+      "⚡ Seconds vs Hours: From SQL to Answers",
+      "🎯 Multi-dimensional Filtering & Analytics"
+    ],
+    features: [
+      "Conversational AI Engine - Ask questions in plain English, AI generates SQL queries automatically",
+      "LLM-powered Intent Understanding - Uses Large Language Models to understand user context and intent",
+      "Real-time Predictive Analytics - ML models forecast future trends from historical data",
+      "Pattern & Anomaly Detection - Automatically identifies insights, outliers, and problem areas in datasets",
+      "Intelligent Recommendations - AI suggests improvements and actionable solutions based on data analysis",
+      "Dynamic Visualization & Insights - Auto-generates relevant charts with AI-powered explanations",
+      "Structured data ingestion with ETL pipelines from CSV/Excel datasets",
+      "RESTful API with advanced query capabilities and multi-dimensional filtering",
+      "Role-based access control (Public, Researcher, Premium) with JWT authentication",
+      "Rate limiting, usage metering, and comprehensive OpenAPI/Swagger documentation",
+      "Sub-millisecond query response times with optimized PostgreSQL indexing",
+      "Scalable architecture handling 415K+ individual records with horizontal scaling"
+    ],
+    tags: ["FastAPI", "PostgreSQL", "React", "LLM APIs", "ML Models", "Next.js", "Recharts", "SQLAlchemy", "JWT Auth", "AI/ML", "Data Science"],
+    github: "https://github.com/Chandu2815/STATAHON-PROJECT",
     live: "#",
     featured: true,
   },
   {
-    title: "AI Resume Screener",
-    description: "Machine learning based tool to parse and rank resumes against specific job descriptions efficiently.",
-    tags: ["Python", "NLP", "Flask"],
-    github: "#",
+    title: "Ancient Text Translational Portal",
+    description: "Full-stack web application that translates ancient Sanskrit text into multiple Indian languages (Telugu, English, Hindi, Kannada, Tamil, Malayalam) using AI-powered translation technologies. Features secure authentication, OCR image text extraction, PDF/document uploads, and complete translation history.",
+    image: "/IMAGE.jpeg",
+    tags: ["FastAPI", "React", "Python", "SQLAlchemy", "JWT Auth", "TesseractOCR", "PostgreSQL", "Translation APIs"],
+    github: "https://github.com/Arunlucky2610/AI-Powered-Sanskrit-Story-Visual-Translator",
     live: "#",
     featured: false,
   },
   {
-    title: "FinTech Transaction Engine",
-    description: "A highly-scalable ledger system for secure and high-throughput financial transactions.",
-    tags: ["Node.js", "Redis", "TypeScript"],
+    title: "RapidSkill",
+    description: "Modern EdTech platform redesign transforming the user experience with a dark-themed UI, improved visual hierarchy, and clear user flow. Focused on guiding users through the learning journey with intuitive navigation and strong call-to-actions. Demonstrates UX analysis, product-first design, and conversion optimization.",
+    image: "/RapidSkill.png",
+    tags: ["React", "Tailwind CSS", "Framer Motion"],
     github: "#",
     live: "#",
     featured: false,
@@ -58,31 +107,56 @@ export default function Projects() {
               }`}
             >
               {/* Optional: Project Image / Abstract background element */}
-              <div className={`rounded-xl overflow-hidden bg-surface-hover ${project.featured ? 'md:w-1/2 w-full aspect-video' : 'w-full aspect-video mb-6'}`}>
-                {/* Fallback abstract gradient pattern if no image */}
-                <div className="w-full h-full bg-gradient-to-br from-surface to-surface-hover flex items-center justify-center relative">
-                   <div className="absolute inset-0 opacity-20 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-brand-secondary via-background to-background" />
-                   <h3 className="text-2xl font-bold text-white/50">{project.title}</h3>
-                </div>
+              <div className={`rounded-xl overflow-hidden bg-surface-hover relative ${project.featured ? 'md:w-1/2 w-full aspect-video' : 'w-full aspect-video mb-6'}`}>
+                {project.image ? (
+                  <Image 
+                    src={project.image} 
+                    alt={project.title}
+                    fill
+                    className="object-cover hover:scale-105 transition-transform duration-300"
+                  />
+                ) : (
+                  <div className="w-full h-full bg-gradient-to-br from-surface to-surface-hover flex items-center justify-center relative">
+                     <div className="absolute inset-0 opacity-20 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-brand-secondary via-background to-background" />
+                     <h3 className="text-2xl font-bold text-white/50">{project.title}</h3>
+                  </div>
+                )}
               </div>
 
               <div className={project.featured ? 'md:w-1/2 w-full flex flex-col h-full justify-center' : 'flex flex-col flex-grow'}>
                  {project.featured && (
-                    <span className="text-brand-accent font-semibold tracking-wider text-sm mb-2">Featured Project</span>
+                    <span className="text-brand-accent font-semibold tracking-wider text-sm mb-2">🎯 Statathon 2025 Finalist (Final Round)</span>
                  )}
                  <h3 className="text-2xl font-bold text-white mb-4 group-hover:text-brand-primary transition-colors">{project.title}</h3>
-                 <p className="text-gray-400 mb-6 flex-grow">{project.description}</p>
+                 <p className="text-gray-400 mb-6 flex-grow leading-relaxed text-sm">{project.description}</p>
+                 
+                 {project.highlights && (
+                    <div className="mb-6 space-y-2">
+                      {project.highlights.map((highlight) => (
+                        <div key={highlight} className="flex items-center gap-2 text-sm text-gray-300">
+                          <span className="w-1.5 h-1.5 rounded-full bg-brand-accent" />
+                          {highlight}
+                        </div>
+                      ))}
+                    </div>
+                 )}
                  
                  <div className="flex flex-wrap gap-2 mb-8">
                     {project.tags.map(tag => (
-                      <span key={tag} className="px-3 py-1 text-xs font-medium rounded-full bg-white/5 text-gray-300 border border-white/10">
+                      <span key={tag} className="px-3 py-1 text-xs font-medium rounded-full bg-white/5 text-gray-300 border border-white/10 hover:border-brand-primary/50 transition-colors">
                         {tag}
                       </span>
                     ))}
                  </div>
 
                  <div className="flex gap-4">
-                    <a href={project.github} className="p-2 bg-surface hover:bg-surface-hover rounded-full transition-colors text-white" aria-label="Source Code">
+                    <a 
+                      href={project.github}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="p-2 bg-surface hover:bg-surface-hover rounded-full transition-colors text-white" 
+                      aria-label="Source Code"
+                    >
                       <Code size={20} />
                     </a>
                     <a href={project.live} className="p-2 bg-surface hover:bg-surface-hover rounded-full transition-colors text-white" aria-label="Live Demo">

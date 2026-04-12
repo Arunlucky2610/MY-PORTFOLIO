@@ -1,3 +1,5 @@
+"use client";
+
 import Hero from "@/components/sections/Hero";
 import About from "@/components/sections/About";
 import Skills from "@/components/sections/Skills";
@@ -8,11 +10,12 @@ import ONG from "@/components/sections/ONG";
 import Contact from "@/components/sections/Contact";
 
 export default function Home() {
+
   return (
     <main className="flex min-h-screen flex-col items-center justify-between pb-20 sm:pb-0">
       
       {/* Sticky Navbar */}
-      <nav className="fixed top-0 left-0 right-0 z-50 glass border-t-0 border-x-0 border-white/10 px-6 py-4 flex justify-between items-center transition-all duration-300">
+      <nav className="fixed top-0 left-0 right-0 z-50 border-t-0 border-x-0 border-white/10 px-6 py-4 flex justify-between items-center transition-all duration-300 bg-background/80">
         <div className="font-bold text-xl tracking-tighter flex items-center gap-2">
           <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-brand-primary to-brand-accent flex items-center justify-center text-white/90 text-sm">AS</div>
           <span>ARUN <span className="text-brand-accent">SUDHAVENI</span></span>
@@ -22,7 +25,6 @@ export default function Home() {
           <a href="#skills" className="hover:text-white transition-colors">Skills</a>
           <a href="#projects" className="hover:text-white transition-colors">Projects</a>
           <a href="#dashboard" className="hover:text-white transition-colors">Dashboard</a>
-          <a href="#ong" className="hover:text-white transition-colors">ONG</a>
           <a href="#contact" className="hover:text-white transition-colors">Contact</a>
         </div>
         <a href="#contact" className="hidden md:block px-5 py-2 text-sm rounded-full bg-white text-black font-semibold hover:bg-gray-200 transition-colors">
