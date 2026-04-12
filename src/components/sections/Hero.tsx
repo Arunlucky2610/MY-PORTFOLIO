@@ -181,7 +181,7 @@ export default function Hero() {
             />
 
             {/* Icon container */}
-            <div className="relative w-16 h-16 rounded-full bg-gradient-to-br from-purple-600/50 to-cyan-600/50 border-2 border-purple-400/70 backdrop-blur-md flex items-center justify-center text-3xl group-hover:border-cyan-400 transition-all duration-300">
+            <div className="relative w-16 h-16 rounded-full bg-slate-800 border-2 border-slate-700 flex items-center justify-center text-3xl group-hover:border-brand-primary/70 transition-all duration-300">
               {tech.icon}
             </div>
 
@@ -190,7 +190,7 @@ export default function Hero() {
               initial={{ opacity: 0, y: 10 }}
               whileHover={{ opacity: 1, y: -35 }}
               transition={{ duration: 0.2 }}
-              className="absolute left-1/2 -translate-x-1/2 px-3 py-1 bg-purple-600/90 backdrop-blur-md rounded-full text-white text-xs font-semibold whitespace-nowrap"
+              className="absolute left-1/2 -translate-x-1/2 px-3 py-1 bg-slate-900 border border-slate-700 rounded-full text-white text-xs font-semibold whitespace-nowrap"
             >
               {tech.label}
             </motion.div>
@@ -288,7 +288,7 @@ export default function Hero() {
                 ]
               }}
               transition={{ duration: 2, repeat: Infinity }}
-              className="px-6 py-3 rounded-full bg-gradient-to-r from-purple-600/30 to-cyan-600/30 border-2 border-purple-500/70 backdrop-blur-md hover:border-cyan-400 transition-all duration-300 cursor-pointer"
+              className="px-6 py-3 rounded-full bg-slate-900 border-2 border-slate-700 hover:border-brand-primary/70 transition-all duration-300 cursor-pointer"
             >
               <div className="flex items-center gap-2">
                 <span className="text-2xl">🤖</span>

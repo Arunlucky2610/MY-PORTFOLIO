@@ -73,8 +73,17 @@ const projects: ProjectType[] = [
     description: "Modern EdTech platform redesign transforming the user experience with a dark-themed UI, improved visual hierarchy, and clear user flow. Focused on guiding users through the learning journey with intuitive navigation and strong call-to-actions. Demonstrates UX analysis, product-first design, and conversion optimization.",
     image: "/RapidSkill.png",
     tags: ["React", "Tailwind CSS", "Framer Motion"],
+    github: "https://rapidskill.in/",
+    live: "https://rapidskill.in/",
+    featured: false,
+  },
+  {
+    title: "Personal Portfolio",
+    description: "Premium full-stack portfolio website showcasing my journey as an AI Agent Builder and Full-Stack Developer. Interactive timeline spanning 2024-2026 with animated data visualizations, project showcase with GitHub integration, professional experience timeline, and comprehensive skill matrix. Built with Next.js, Framer Motion, and Recharts for engaging animations and responsive design.",
+    image: "/Portfolio.png",
+    tags: ["Next.js", "React", "TypeScript", "Tailwind CSS", "Framer Motion", "Recharts", "Vercel"],
     github: "#",
-    live: "#",
+    live: "localhost:3000",
     featured: false,
   },
 ];
@@ -102,7 +111,7 @@ export default function Projects() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: "-50px" }}
               transition={{ duration: 0.6, delay: index * 0.1 }}
-              className={`glass p-8 rounded-3xl relative group overflow-hidden transition-all duration-500 hover:-translate-y-2 hover:shadow-2xl hover:shadow-brand-primary/20 ${
+              className={`glass p-8 rounded-2xl relative group overflow-hidden transition-all duration-500 hover:-translate-y-2 ${
                 project.featured ? "md:col-span-2 flex flex-col md:flex-row gap-8 items-center" : "flex flex-col flex-grow"
               }`}
             >
@@ -143,7 +152,7 @@ export default function Projects() {
                  
                  <div className="flex flex-wrap gap-2 mb-8">
                     {project.tags.map(tag => (
-                      <span key={tag} className="px-3 py-1 text-xs font-medium rounded-full bg-white/5 text-gray-300 border border-white/10 hover:border-brand-primary/50 transition-colors">
+                      <span key={tag} className="px-3 py-1 text-xs font-medium rounded-full bg-slate-800 text-gray-300 border border-slate-700 hover:border-brand-primary/70 transition-colors">
                         {tag}
                       </span>
                     ))}
@@ -159,7 +168,13 @@ export default function Projects() {
                     >
                       <Code size={20} />
                     </a>
-                    <a href={project.live} className="p-2 bg-surface hover:bg-surface-hover rounded-full transition-colors text-white" aria-label="Live Demo">
+                    <a 
+                      href={project.live} 
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="p-2 bg-surface hover:bg-surface-hover rounded-full transition-colors text-white" 
+                      aria-label="Live Demo"
+                    >
                       <ExternalLink size={20} />
                     </a>
                  </div>

@@ -130,7 +130,7 @@ export default function Skills() {
               </div>
 
               {/* Card */}
-              <div className={`relative h-full p-8 rounded-2xl border border-white/10 group-hover:border-white/30 transition-all duration-500 bg-gradient-to-br ${category.bgGradient} backdrop-blur-xl overflow-hidden`}>
+              <div className={`relative h-full p-8 rounded-2xl bg-slate-900 border border-slate-700 group-hover:border-brand-primary/50 transition-all duration-500 overflow-hidden`}>
                 {/* Icon */}
                 <motion.div
                   animate={{ y: [0, -5, 0] }}
@@ -151,7 +151,7 @@ export default function Skills() {
                     <span className="text-xs font-semibold text-gray-400">Proficiency</span>
                     <span className="text-xs font-bold text-brand-accent">{category.proficiency}%</span>
                   </div>
-                  <div className="h-1.5 w-full bg-white/5 rounded-full overflow-hidden">
+                  <div className="h-1.5 w-full bg-slate-800 rounded-full overflow-hidden">
                     <motion.div
                       className={`h-full bg-gradient-to-r ${category.borderColor} rounded-full`}
                       initial={{ width: 0 }}
@@ -202,9 +202,8 @@ export default function Skills() {
             <motion.div
               key={stat.label}
               whileHover={{ y: -5 }}
-              className="relative p-8 rounded-2xl border border-white/10 bg-gradient-to-br from-white/5 to-white/[0.02] backdrop-blur-sm text-center group"
+              className="relative p-8 rounded-2xl bg-slate-900 border border-slate-700 text-center group hover:border-brand-primary/50 transition-all duration-300"
             >
-              <div className="absolute inset-0 rounded-2xl bg-gradient-to-br from-brand-primary/10 to-brand-accent/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300 -z-10" />
               <motion.div
                 animate={{ scale: [1, 1.05, 1] }}
                 transition={{ duration: 2, repeat: Infinity }}

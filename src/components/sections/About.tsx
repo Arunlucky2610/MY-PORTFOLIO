@@ -67,7 +67,7 @@ export default function About() {
                 transition={{ duration: 0.5, delay: index * 0.1 }}
                 className="glass glass-hover p-6 rounded-2xl flex flex-col gap-4 h-full"
               >
-                <div className="p-3 bg-white/5 rounded-xl w-fit">
+                <div className="p-3 bg-slate-800 rounded-lg w-fit">
                   {item.icon}
                 </div>
                 <div>
