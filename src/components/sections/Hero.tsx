@@ -39,7 +39,7 @@ export default function Hero() {
   }, []);
 
   return (
-    <section className="relative min-h-screen w-full flex items-center justify-center overflow-hidden pt-16 sm:pt-20 md:pt-24 lg:pt-32 pb-10 sm:pb-16 md:pb-20">
+    <section className="relative min-h-screen w-full flex items-center justify-center overflow-hidden pt-28 sm:pt-32 md:pt-36 lg:pt-40 pb-10 sm:pb-16 md:pb-20">
       {/* Enhanced Background 3D Canvas */}
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[250px] h-[250px] sm:w-[350px] sm:h-[350px] md:w-[450px] md:h-[450px] lg:w-[600px] lg:h-[600px] z-0 opacity-40 sm:opacity-50 lg:opacity-60 pointer-events-none overflow-hidden rounded-full">
         <Canvas3D />
@@ -55,7 +55,7 @@ export default function Hero() {
             y: { repeat: Infinity, duration: 4, ease: "easeInOut" }
           }}
           whileHover={{ scale: 1.1 }}
-          className="mb-12 sm:mb-16 md:mb-20 lg:mb-24 relative group cursor-pointer pointer-events-none"
+          className="mb-16 sm:mb-20 md:mb-24 lg:mb-32 relative group cursor-pointer pointer-events-none"
         >
           {/* Animated rotating border */}
           <motion.div
@@ -109,14 +109,14 @@ export default function Hero() {
           className="hidden md:block absolute -bottom-20 -right-20 w-40 h-40 border border-cyan-400/20 rounded-full"
         />
 
-        {/* Featured Tech Icons in Workspace - Hidden on mobile/tablet for better UX */}
-        <div className="hidden lg:block">
+        {/* Featured Tech Icons in Workspace - Only show on large desktop */}
+        <div className="sm:hidden md:hidden lg:block xl:block pointer-events-none">
           {[
-            { icon: '🐍', label: 'Python', top: '15%', left: '8%', delay: 0 },
-            { icon: '⚛️', label: 'React', top: '20%', right: '9%', delay: 0.2 },
-            { icon: '🔷', label: 'Django', top: '70%', left: '10%', delay: 0.4 },
-            { icon: '🌶️', label: 'Flask', top: '72%', right: '11%', delay: 0.6 },
-            { icon: '🟩', label: 'Node.js', top: '42%', right: '6%', delay: 0.8 },
+            { icon: '🐍', label: 'Python', top: '25%', left: '8%', delay: 0 },
+            { icon: '⚛️', label: 'React', top: '30%', right: '9%', delay: 0.2 },
+            { icon: '🔷', label: 'Django', top: '75%', left: '10%', delay: 0.4 },
+            { icon: '🌶️', label: 'Flask', top: '80%', right: '11%', delay: 0.6 },
+            { icon: '🟩', label: 'Node.js', top: '52%', right: '6%', delay: 0.8 },
           ].map((tech, index) => (
             <motion.div
               key={index}

@@ -15,8 +15,7 @@ export default function Home() {
       <nav className="fixed top-0 left-0 right-0 z-50 border-t-0 border-x-0 border-slate-700 px-4 sm:px-6 py-3 sm:py-4 flex justify-between items-center transition-all duration-300 bg-background/80">
         <div className="font-bold text-sm sm:text-base lg:text-xl tracking-tighter flex items-center gap-2">
           <div className="w-7 sm:w-8 h-7 sm:h-8 rounded-lg bg-gradient-to-br from-brand-primary to-brand-accent flex items-center justify-center text-white/90 text-xs sm:text-sm">AS</div>
-          <span className="hidden sm:inline">ARUN <span className="text-brand-accent">SUDHAVENI</span></span>
-          <span className="sm:hidden text-xs">ARUN<span className="text-brand-accent">.</span></span>
+          <span>Arun Sudhaveni</span>
         </div>
         <div className="hidden md:flex gap-6 lg:gap-8 text-xs lg:text-sm font-medium text-gray-300">
           <a href="#about" className="hover:text-white transition-colors">About</a>
@@ -28,10 +27,7 @@ export default function Home() {
         <a href="#contact" className="hidden md:block px-4 lg:px-5 py-2 text-xs lg:text-sm rounded-full bg-white text-black font-semibold hover:bg-gray-200 transition-colors">
           Get in touch
         </a>
-        <div className="md:hidden glass p-2 sm:p-2.5 rounded-lg cursor-pointer hover:border-brand-primary/50 transition-colors">
-          {/* Menu icon SVG */}
-          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="4" x2="20" y1="12" y2="12"/><line x1="4" x2="20" y1="6" y2="6"/><line x1="4" x2="20" y1="18" y2="18"/></svg>
-        </div>
+        {/* Menu icon removed for cleaner mobile UX */}
       </nav>
 
       <Hero />
