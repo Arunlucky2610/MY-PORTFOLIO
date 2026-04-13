@@ -55,7 +55,7 @@ export default function Hero() {
             y: { repeat: Infinity, duration: 4, ease: "easeInOut" }
           }}
           whileHover={{ scale: 1.1 }}
-          className="mb-10 lg:mb-12 relative group cursor-pointer"
+          className="mb-12 sm:mb-16 md:mb-20 lg:mb-24 relative group cursor-pointer pointer-events-none"
         >
           {/* Animated rotating border */}
           <motion.div
@@ -97,97 +97,99 @@ export default function Hero() {
         {/* Floating Technical Elements - Positioned on sides */}
         {/* Removed for cleaner design */}
 
-        {/* Corner accent elements */}
+        {/* Corner accent elements - Hidden on mobile for cleaner look */}
         <motion.div
           animate={{ rotate: 360 }}
           transition={{ duration: 8, repeat: Infinity, ease: "linear" }}
-          className="absolute -top-20 -left-20 w-32 h-32 border border-purple-400/20 rounded-full"
+          className="hidden md:block absolute -top-20 -left-20 w-32 h-32 border border-purple-400/20 rounded-full"
         />
         <motion.div
           animate={{ rotate: -360 }}
           transition={{ duration: 10, repeat: Infinity, ease: "linear" }}
-          className="absolute -bottom-20 -right-20 w-40 h-40 border border-cyan-400/20 rounded-full"
+          className="hidden md:block absolute -bottom-20 -right-20 w-40 h-40 border border-cyan-400/20 rounded-full"
         />
 
-        {/* Featured Tech Icons in Workspace */}
-        {[
-          { icon: '🐍', label: 'Python', top: '15%', left: '8%', delay: 0 },
-          { icon: '⚛️', label: 'React', top: '20%', right: '9%', delay: 0.2 },
-          { icon: '🔷', label: 'Django', top: '70%', left: '10%', delay: 0.4 },
-          { icon: '🌶️', label: 'Flask', top: '72%', right: '11%', delay: 0.6 },
-          { icon: '🟩', label: 'Node.js', top: '42%', right: '6%', delay: 0.8 },
-        ].map((tech, index) => (
-          <motion.div
-            key={index}
-            animate={{
-              y: [0, -15, 0],
-              rotate: [0, 360],
-            }}
-            transition={{
-              duration: 5 + index * 0.5,
-              repeat: Infinity,
-              ease: "easeInOut",
-              delay: tech.delay,
-            }}
-            whileHover={{
-              scale: 1.25,
-              boxShadow: "0 0 30px rgba(139, 92, 246, 0.8)",
-            }}
-            className="absolute group cursor-pointer"
-            style={{
-              top: tech.top,
-              left: tech.left,
-              right: tech.right,
-            }}
-          >
-            {/* Glowing circle background */}
+        {/* Featured Tech Icons in Workspace - Hidden on mobile/tablet for better UX */}
+        <div className="hidden lg:block">
+          {[
+            { icon: '🐍', label: 'Python', top: '15%', left: '8%', delay: 0 },
+            { icon: '⚛️', label: 'React', top: '20%', right: '9%', delay: 0.2 },
+            { icon: '🔷', label: 'Django', top: '70%', left: '10%', delay: 0.4 },
+            { icon: '🌶️', label: 'Flask', top: '72%', right: '11%', delay: 0.6 },
+            { icon: '🟩', label: 'Node.js', top: '42%', right: '6%', delay: 0.8 },
+          ].map((tech, index) => (
             <motion.div
+              key={index}
               animate={{
-                boxShadow: [
-                  "0 0 15px rgba(139, 92, 246, 0.4)",
-                  "0 0 35px rgba(6, 182, 212, 0.7)",
-                  "0 0 15px rgba(139, 92, 246, 0.4)",
-                ],
-              }}
-              transition={{ duration: 2, repeat: Infinity }}
-              className="absolute inset-0 rounded-full bg-gradient-to-br from-purple-500/25 to-cyan-500/25"
-              style={{ width: '70px', height: '70px' }}
-            />
-
-            {/* Icon container */}
-            <div className="relative w-16 h-16 rounded-full bg-slate-800 border-2 border-slate-700 flex items-center justify-center text-3xl group-hover:border-brand-primary/70 transition-all duration-300">
-              {tech.icon}
-            </div>
-
-            {/* Label tooltip */}
-            <motion.div
-              initial={{ opacity: 0, y: 10 }}
-              whileHover={{ opacity: 1, y: -35 }}
-              transition={{ duration: 0.2 }}
-              className="absolute left-1/2 -translate-x-1/2 px-3 py-1 bg-slate-900 border border-slate-700 rounded-full text-white text-xs font-semibold whitespace-nowrap"
-            >
-              {tech.label}
-            </motion.div>
-
-            {/* Pulse ring */}
-            <motion.div
-              animate={{
-                scale: [1, 1.6, 2.2],
-                opacity: [1, 0.5, 0],
+                y: [0, -15, 0],
+                rotate: [0, 360],
               }}
               transition={{
-                duration: 2.5,
+                duration: 5 + index * 0.5,
                 repeat: Infinity,
+                ease: "easeInOut",
                 delay: tech.delay,
               }}
-              className="absolute inset-0 rounded-full border-2 border-cyan-400/60"
-              style={{ width: '70px', height: '70px' }}
-            />
-          </motion.div>
-        ))}
+              whileHover={{
+                scale: 1.25,
+                boxShadow: "0 0 30px rgba(139, 92, 246, 0.8)",
+              }}
+              className="absolute group cursor-pointer"
+              style={{
+                top: tech.top,
+                left: tech.left,
+                right: tech.right,
+              }}
+            >
+              {/* Glowing circle background */}
+              <motion.div
+                animate={{
+                  boxShadow: [
+                    "0 0 15px rgba(139, 92, 246, 0.4)",
+                    "0 0 35px rgba(6, 182, 212, 0.7)",
+                    "0 0 15px rgba(139, 92, 246, 0.4)",
+                  ],
+                }}
+                transition={{ duration: 2, repeat: Infinity }}
+                className="absolute inset-0 rounded-full bg-gradient-to-br from-purple-500/25 to-cyan-500/25"
+                style={{ width: '70px', height: '70px' }}
+              />
 
-        {/* Animated connecting lines */}
-        <svg className="absolute inset-0 w-full h-full pointer-events-none [filter:drop-shadow(0_0_2px_rgba(139,92,246,0.3))]">
+              {/* Icon container */}
+              <div className="relative w-16 h-16 rounded-full bg-slate-800 border-2 border-slate-700 flex items-center justify-center text-3xl group-hover:border-brand-primary/70 transition-all duration-300">
+                {tech.icon}
+              </div>
+
+              {/* Label tooltip */}
+              <motion.div
+                initial={{ opacity: 0, y: 10 }}
+                whileHover={{ opacity: 1, y: -35 }}
+                transition={{ duration: 0.2 }}
+                className="absolute left-1/2 -translate-x-1/2 px-3 py-1 bg-slate-900 border border-slate-700 rounded-full text-white text-xs font-semibold whitespace-nowrap"
+              >
+                {tech.label}
+              </motion.div>
+
+              {/* Pulse ring */}
+              <motion.div
+                animate={{
+                  scale: [1, 1.6, 2.2],
+                  opacity: [1, 0.5, 0],
+                }}
+                transition={{
+                  duration: 2.5,
+                  repeat: Infinity,
+                  delay: tech.delay,
+                }}
+                className="absolute inset-0 rounded-full border-2 border-cyan-400/60"
+                style={{ width: '70px', height: '70px' }}
+              />
+            </motion.div>
+          ))}
+        </div>
+
+        {/* Animated connecting lines - Simplified on mobile for performance */}
+        <svg className="hidden md:block absolute inset-0 w-full h-full pointer-events-none [filter:drop-shadow(0_0_2px_rgba(139,92,246,0.3))]">
           <motion.circle
             cx="50%"
             cy="50%"
@@ -219,7 +221,7 @@ export default function Hero() {
         </svg>
 
         <motion.h1 
-          className="text-4xl sm:text-6xl md:text-7xl lg:text-8xl font-extrabold tracking-tight mb-3 sm:mb-4"
+          className="text-4xl sm:text-6xl md:text-7xl lg:text-8xl font-extrabold tracking-tight mb-3 sm:mb-4 relative z-20"
           initial={{ y: 50, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
           transition={{ duration: 0.8, delay: 0.2 }}
@@ -229,11 +231,11 @@ export default function Hero() {
 
         <p 
           ref={subtitleRef} 
-          className="text-sm sm:text-lg md:text-xl lg:text-2xl text-gray-300 font-medium mb-8 sm:mb-12"
+          className="text-sm sm:text-lg md:text-xl lg:text-2xl text-gray-300 font-medium mb-8 sm:mb-12 relative z-20"
         />
 
         <motion.div 
-          className="flex flex-col sm:flex-row gap-3 sm:gap-4 mb-16 sm:mb-20"
+          className="flex flex-col sm:flex-row gap-3 sm:gap-4 mb-16 sm:mb-20 relative z-20"
           initial={{ y: 20, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
           transition={{ duration: 0.5, delay: 1 }}
@@ -251,6 +253,7 @@ export default function Hero() {
           initial={{ scale: 0.8, opacity: 0, y: 10 }}
           animate={{ scale: 1, opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 1.2 }}
+          className="relative z-20"
         >
           <div className="inline-block">
             <motion.div
