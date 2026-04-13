@@ -39,9 +39,9 @@ export default function Hero() {
   }, []);
 
   return (
-    <section className="relative min-h-screen w-full flex items-center justify-center overflow-hidden pt-40 pb-20">
+    <section className="relative min-h-screen w-full flex items-center justify-center overflow-hidden pt-16 sm:pt-20 md:pt-24 lg:pt-32 pb-10 sm:pb-16 md:pb-20">
       {/* Enhanced Background 3D Canvas */}
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] lg:w-[600px] lg:h-[600px] z-0 opacity-60 pointer-events-none overflow-hidden rounded-full">
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[250px] h-[250px] sm:w-[350px] sm:h-[350px] md:w-[450px] md:h-[450px] lg:w-[600px] lg:h-[600px] z-0 opacity-40 sm:opacity-50 lg:opacity-60 pointer-events-none overflow-hidden rounded-full">
         <Canvas3D />
       </div>
 
@@ -74,7 +74,7 @@ export default function Hero() {
               ]
             }}
             transition={{ duration: 3, repeat: Infinity }}
-            className="w-48 h-48 sm:w-56 sm:h-56 md:w-72 md:h-72 rounded-full glow-border p-2 relative"
+            className="w-40 h-40 sm:w-48 sm:h-48 md:w-56 md:h-56 lg:w-72 lg:h-72 rounded-full glow-border p-2 relative"
           >
             <motion.div 
               animate={{ 
@@ -219,7 +219,7 @@ export default function Hero() {
         </svg>
 
         <motion.h1 
-          className="text-5xl md:text-8xl font-extrabold tracking-tight mb-4"
+          className="text-4xl sm:text-6xl md:text-7xl lg:text-8xl font-extrabold tracking-tight mb-3 sm:mb-4"
           initial={{ y: 50, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
           transition={{ duration: 0.8, delay: 0.2 }}
@@ -229,19 +229,19 @@ export default function Hero() {
 
         <p 
           ref={subtitleRef} 
-          className="text-xl md:text-2xl text-gray-300 font-medium mb-12"
+          className="text-sm sm:text-lg md:text-xl lg:text-2xl text-gray-300 font-medium mb-8 sm:mb-12"
         />
 
         <motion.div 
-          className="flex flex-col sm:flex-row gap-4 mb-20"
+          className="flex flex-col sm:flex-row gap-3 sm:gap-4 mb-16 sm:mb-20"
           initial={{ y: 20, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
           transition={{ duration: 0.5, delay: 1 }}
         >
-          <a href="#projects" className="px-8 py-3 rounded-full bg-white text-black font-semibold hover:scale-105 transition-transform duration-300 flex justify-center">
+          <a href="#projects" className="px-6 sm:px-8 py-3 sm:py-3 rounded-full bg-white text-black font-semibold hover:scale-105 transition-transform duration-300 flex justify-center text-sm sm:text-base touch-friendly">
             View Projects
           </a>
-          <a href="#contact" className="px-8 py-3 rounded-full glass glass-hover text-white font-semibold flex justify-center items-center">
+          <a href="#contact" className="px-6 sm:px-8 py-3 sm:py-3 rounded-full glass glass-hover text-white font-semibold flex justify-center items-center text-sm sm:text-base touch-friendly">
             Contact Me
           </a>
         </motion.div>

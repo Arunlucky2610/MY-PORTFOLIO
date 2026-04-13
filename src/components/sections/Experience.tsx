@@ -65,10 +65,10 @@ export default function Experience() {
         {/* Timeline */}
         <div className="relative max-w-3xl mx-auto">
           {/* Central Vertical Line */}
-          <div className="absolute left-8 top-0 bottom-0 w-1 bg-gradient-to-b from-brand-primary via-brand-secondary to-brand-accent"></div>
+          <div className="absolute left-4 sm:left-8 top-0 bottom-0 w-1 bg-gradient-to-b from-brand-primary via-brand-secondary to-brand-accent"></div>
 
           {/* Timeline Items */}
-          <div className="space-y-12">
+          <div className="space-y-8 sm:space-y-12">
             {experiences.map((exp, index) => (
               <motion.div
                 key={exp.company}
@@ -76,7 +76,7 @@ export default function Experience() {
                 whileInView={{ opacity: 1, x: 0 }}
                 viewport={{ once: true, margin: "-100px" }}
                 transition={{ duration: 0.6, delay: index * 0.2 }}
-                className="relative pl-28"
+                className="relative pl-16 sm:pl-28"
               >
                 {/* Timeline Node */}
                 <motion.div

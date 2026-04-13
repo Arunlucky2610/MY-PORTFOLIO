@@ -17,6 +17,29 @@
     --background: var(--color-background);
     --foreground: #f9fafb;
   }
+
+  /* Mobile-First Responsive Typography */
+  @media (max-width: 639px) {
+    h1 {
+      @apply text-2xl;
+    }
+    h2 {
+      @apply text-2xl;
+    }
+    h3 {
+      @apply text-lg;
+    }
+    p {
+      @apply text-sm;
+    }
+  }
+
+  /* Touch-Friendly Buttons on Mobile */
+  @media (hover: none) and (pointer: coarse) {
+    button, a[role="button"] {
+      @apply min-h-12 min-w-12;
+    }
+  }
 }
 
 @layer base {
@@ -27,6 +50,8 @@
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     overflow-x: hidden;
+    /* Prevent zoom on input focus on mobile */
+    font-size: 16px;
   }
 }
 
@@ -45,6 +70,19 @@
 
   .glow-border {
     @apply flex relative before:absolute before:inset-0 before:-z-10 before:p-[1px] before:bg-gradient-to-r before:from-brand-primary before:via-brand-secondary before:to-brand-accent before:rounded-[inherit];
+  }
+
+  /* Mobile-specific utilities */
+  @media (max-width: 639px) {
+    .touch-friendly {
+      @apply min-h-12 min-w-12;
+    }
+    .mobile-padding {
+      @apply px-4 py-3;
+    }
+    .mobile-text-sm {
+      @apply text-xs;
+    }
   }
 }
 
