@@ -40,8 +40,8 @@ export default function Hero() {
 
   return (
     <section className="relative min-h-screen w-full flex items-center justify-center overflow-hidden pt-40 pb-20">
-      {/* Background 3D Canvas */}
-      <div className="absolute inset-0 z-0 opacity-60">
+      {/* Background 3D Canvas - Centered behind profile */}
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-96 h-96 z-0 opacity-50 pointer-events-none">
         <Canvas3D />
       </div>
 

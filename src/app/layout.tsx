@@ -1,7 +1,11 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
+// @ts-ignore - CSS import
 import "./globals.css";
 import SmoothScroller from "@/components/layout/SmoothScroller";
+
+// ChatBot disabled for planning and design phase
+// import ChatBot from "@/components/layout/ChatBot";
 
 const inter = Inter({
   variable: "--font-inter",
@@ -10,8 +14,8 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: "Arun Sudhaveni | Data Analyst & Backend Developer",
-  description: "Portfolio of Arun Sudhaveni, a Data Analyst and Backend Developer. Highlighting projects, hackathons, and open source contributions.",
+  title: "Arun Sudhaveni | Full Stack Developer | AI Agent Builder",
+  description: "Portfolio of Arun Sudhaveni, a Full Stack Developer and AI Agent Builder. Explore projects, skills, and get in touch!",
 };
 
 export default function RootLayout({
@@ -25,6 +29,7 @@ export default function RootLayout({
         <SmoothScroller>
           {children}
         </SmoothScroller>
+        {/* ChatBot component disabled - will enable after design phase */}
       </body>
     </html>
   );
