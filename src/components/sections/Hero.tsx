@@ -40,8 +40,8 @@ export default function Hero() {
 
   return (
     <section className="relative min-h-screen w-full flex items-center justify-center overflow-hidden pt-40 pb-20">
-      {/* Background 3D Canvas - Centered behind profile */}
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-96 h-96 z-0 opacity-50 pointer-events-none">
+      {/* Enhanced Background 3D Canvas */}
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] lg:w-[600px] lg:h-[600px] z-0 opacity-60 pointer-events-none overflow-hidden rounded-full">
         <Canvas3D />
       </div>
 
@@ -187,7 +187,7 @@ export default function Hero() {
         ))}
 
         {/* Animated connecting lines */}
-        <svg className="absolute inset-0 w-full h-full pointer-events-none" style={{ filter: 'drop-shadow(0 0 2px rgba(139, 92, 246, 0.3))' }}>
+        <svg className="absolute inset-0 w-full h-full pointer-events-none [filter:drop-shadow(0_0_2px_rgba(139,92,246,0.3))]">
           <motion.circle
             cx="50%"
             cy="50%"
