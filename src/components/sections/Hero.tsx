@@ -110,7 +110,7 @@ export default function Hero() {
         />
 
         {/* Featured Tech Icons in Workspace - Only show on large desktop */}
-        <div className="sm:hidden md:hidden lg:block xl:block pointer-events-none">
+        <div className="hidden lg:block pointer-events-none">
           {[
             { icon: '🐍', label: 'Python', top: '25%', left: '8%', delay: 0 },
             { icon: '⚛️', label: 'React', top: '30%', right: '9%', delay: 0.2 },

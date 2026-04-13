@@ -105,6 +105,14 @@
   }
 }
 
+/* Mobile breakpoint override for floating tech icons */
+@media (max-width: 1023px) {
+  .hidden\.lg\:block {
+    display: none !important;
+    visibility: hidden !important;
+  }
+}
+
 /* Custom Scrollbar for non-lenis fallback */
 ::-webkit-scrollbar {
   width: 8px;
