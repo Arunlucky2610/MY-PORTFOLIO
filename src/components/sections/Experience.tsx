@@ -15,14 +15,14 @@ const experiences = [
     achievements: ["UI/UX Redesign", "API Optimization", "10K+ Learners"],
   },
   {
-    role: "Team Lead",
+    role: "Project Finalist",
     company: "Statathon 2025 (Central Government Project)",
     duration: "July 2025 - Jun 2026",
     status: "Current",
-    description: "Leading All India Top 4 finalist team developing innovative solution for central government project. Managing team coordination, architecture design, and strategic planning. Successfully secured ₹50K seed funding and advancing to national finals in June 3rd week.",
+    description: "All India Top 4 finalist developing innovative solution for central government project. Contributing to architecture design and strategic planning. Successfully secured ₹50K seed funding and advancing to national finals in June 3rd week.",
     icon: Award,
     gradient: "from-yellow-500 to-orange-500",
-    achievements: ["All India Top 4", "Team Lead", "₹50K Seed Funding", "Finals June 2026"],
+    achievements: ["All India Top 4", "₹50K Seed Funding", "Finals June 2026"],
   },
   {
     role: "Full-Stack Developer",

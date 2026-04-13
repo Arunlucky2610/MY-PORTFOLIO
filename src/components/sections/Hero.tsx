@@ -4,7 +4,7 @@ import { useRef, useEffect } from "react";
 import Image from "next/image";
 import { motion } from "framer-motion";
 import dynamic from "next/dynamic";
-import { gsap } from "gsap";
+import gsap from "gsap";
 
 // Dynamically import Canvas3D to prevent SSR issues
 const Canvas3D = dynamic(() => import("@/components/layout/Canvas3D"), { 

@@ -1,7 +1,7 @@
 "use client";
 
-import { Canvas, useFrame, useThree } from "@react-three/fiber";
-import { Sphere, MeshDistortMaterial, OrbitControls, Environment } from "@react-three/drei";
+import { Canvas, useFrame, RootState } from "@react-three/fiber";
+import { Sphere, MeshDistortMaterial, Environment } from "@react-three/drei";
 import { useRef, useEffect, useState } from "react";
 import * as THREE from "three";
 
@@ -21,7 +21,7 @@ function AnimatedSphere() {
     return () => window.removeEventListener("mousemove", handleMouseMove);
   }, []);
 
-  useFrame((state) => {
+  useFrame((state: RootState) => {
     if (meshRef.current) {
       // Normal rotation
       meshRef.current.rotation.x = state.clock.getElapsedTime() * 0.2 + mousePos.y * 0.3;
@@ -59,14 +59,6 @@ function AnimatedSphere() {
           opacity={0.85}
         />
       </Sphere>
-      
-      <OrbitControls 
-        enableZoom={false} 
-        enablePan={false} 
-        autoRotate 
-        autoRotateSpeed={0.5}
-        enableRotate={false}
-      />
       
       <Environment preset="city" />
     </>

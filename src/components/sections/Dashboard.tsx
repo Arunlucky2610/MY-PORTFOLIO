@@ -71,10 +71,9 @@ export default function Dashboard() {
             whileInView={{ opacity: 1, scale: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 1, ease: "easeOut" }}
-            className="lg:col-span-3 glass p-6 sm:p-8 rounded-2xl min-h-[400px] relative overflow-hidden"
-            style={{ height: '400px' }}
+            className="lg:col-span-3 glass p-6 sm:p-8 rounded-2xl min-h-[400px] relative overflow-hidden w-full"
           >
-            <div style={{ width: '100%', height: '100%' }}>
+            <div className="w-full h-[400px]">
               <ResponsiveContainer width="100%" height="100%">
                 <AreaChart data={performanceData} margin={{ top: 10, right: 10, left: -20, bottom: 0 }}>
                   <defs>
