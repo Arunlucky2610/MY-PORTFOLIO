@@ -16,6 +16,9 @@ const inter = Inter({
 export const metadata: Metadata = {
   title: "Arun Sudhaveni | Full Stack Developer | AI Agent Builder",
   description: "Portfolio of Arun Sudhaveni, a Full Stack Developer and AI Agent Builder. Explore projects, skills, and get in touch!",
+  icons: {
+    icon: '/favicon.svg',
+  },
 };
 
 export default function RootLayout({

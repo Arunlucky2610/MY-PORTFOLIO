@@ -84,7 +84,7 @@ export default function Hero() {
               transition={{ duration: 4, repeat: Infinity }}
               className="w-full h-full rounded-full bg-surface-hover flex items-center justify-center text-4xl font-bold bg-cover bg-center overflow-hidden relative border-2 border-transparent group-hover:border-cyan-400 transition-colors duration-300"
             >
-              <Image src="/ong-image.png" alt="Arun Sudhaveni" fill className="object-cover" priority />
+              <Image src="/ong-image.png" alt="Arun Sudhaveni" fill className="object-cover" priority sizes="(max-width: 768px) 150px, 200px" />
               {/* Shine effect on hover */}
               <motion.div
                 animate={{ x: ["-100%", "100%"] }}

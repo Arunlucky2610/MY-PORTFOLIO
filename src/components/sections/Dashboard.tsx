@@ -71,52 +71,54 @@ export default function Dashboard() {
             whileInView={{ opacity: 1, scale: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 1, ease: "easeOut" }}
-            className="lg:col-span-3 glass p-6 sm:p-8 rounded-2xl h-[400px] flex items-center justify-center relative overflow-hidden"
+            className="lg:col-span-3 glass p-6 sm:p-8 rounded-2xl min-h-[400px] relative overflow-hidden"
+            style={{ height: '400px' }}
           >
-            
-            <ResponsiveContainer width="100%" height="100%">
-              <AreaChart data={performanceData} margin={{ top: 10, right: 10, left: -20, bottom: 0 }}>
-                <defs>
-                  <linearGradient id="colorLeetcode" x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="5%" stopColor="#8b5cf6" stopOpacity={0.8}/>
-                    <stop offset="95%" stopColor="#8b5cf6" stopOpacity={0}/>
-                  </linearGradient>
-                  <linearGradient id="colorProjects" x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="5%" stopColor="#06b6d4" stopOpacity={0.8}/>
-                    <stop offset="95%" stopColor="#06b6d4" stopOpacity={0}/>
-                  </linearGradient>
-                </defs>
-                <CartesianGrid strokeDasharray="3 3" stroke="#374151" vertical={false} />
-                <XAxis dataKey="name" stroke="#9ca3af" tick={{ fill: '#9ca3af', fontSize: 12 }} axisLine={false} tickLine={false} dy={10} />
-                <YAxis stroke="#9ca3af" tick={{ fill: '#9ca3af', fontSize: 12 }} axisLine={false} tickLine={false} />
-                <Tooltip 
-                  contentStyle={{ backgroundColor: '#111827', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '12px' }}
-                  itemStyle={{ color: '#fff' }}
-                />
-                <Area 
-                  type="monotone" 
-                  dataKey="leetcode" 
-                  stroke="#8b5cf6" 
-                  strokeWidth={3} 
-                  fillOpacity={1} 
-                  fill="url(#colorLeetcode)"
-                  isAnimationActive={true}
-                  animationDuration={2500}
-                  animationEasing="ease-in-out"
-                />
-                <Area 
-                  type="monotone" 
-                  dataKey="projects" 
-                  stroke="#06b6d4" 
-                  strokeWidth={3} 
-                  fillOpacity={1} 
-                  fill="url(#colorProjects)"
-                  isAnimationActive={true}
-                  animationDuration={2800}
-                  animationEasing="ease-in-out"
-                />
-              </AreaChart>
-            </ResponsiveContainer>
+            <div style={{ width: '100%', height: '100%' }}>
+              <ResponsiveContainer width="100%" height="100%">
+                <AreaChart data={performanceData} margin={{ top: 10, right: 10, left: -20, bottom: 0 }}>
+                  <defs>
+                    <linearGradient id="colorLeetcode" x1="0" y1="0" x2="0" y2="1">
+                      <stop offset="5%" stopColor="#8b5cf6" stopOpacity={0.8}/>
+                      <stop offset="95%" stopColor="#8b5cf6" stopOpacity={0}/>
+                    </linearGradient>
+                    <linearGradient id="colorProjects" x1="0" y1="0" x2="0" y2="1">
+                      <stop offset="5%" stopColor="#06b6d4" stopOpacity={0.8}/>
+                      <stop offset="95%" stopColor="#06b6d4" stopOpacity={0}/>
+                    </linearGradient>
+                  </defs>
+                  <CartesianGrid strokeDasharray="3 3" stroke="#374151" vertical={false} />
+                  <XAxis dataKey="name" stroke="#9ca3af" tick={{ fill: '#9ca3af', fontSize: 12 }} axisLine={false} tickLine={false} dy={10} />
+                  <YAxis stroke="#9ca3af" tick={{ fill: '#9ca3af', fontSize: 12 }} axisLine={false} tickLine={false} />
+                  <Tooltip 
+                    contentStyle={{ backgroundColor: '#111827', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '12px' }}
+                    itemStyle={{ color: '#fff' }}
+                  />
+                  <Area 
+                    type="monotone" 
+                    dataKey="leetcode" 
+                    stroke="#8b5cf6" 
+                    strokeWidth={3} 
+                    fillOpacity={1} 
+                    fill="url(#colorLeetcode)"
+                    isAnimationActive={true}
+                    animationDuration={2500}
+                    animationEasing="ease-in-out"
+                  />
+                  <Area 
+                    type="monotone" 
+                    dataKey="projects" 
+                    stroke="#06b6d4" 
+                    strokeWidth={3} 
+                    fillOpacity={1} 
+                    fill="url(#colorProjects)"
+                    isAnimationActive={true}
+                    animationDuration={2800}
+                    animationEasing="ease-in-out"
+                  />
+                </AreaChart>
+              </ResponsiveContainer>
+            </div>
           </motion.div>
         </div>
       </div>
