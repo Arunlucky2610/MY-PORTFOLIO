@@ -1,7 +1,7 @@
 "use client";
 
 import { AnimatePresence, motion } from "framer-motion";
-import { Pause, Play, SkipForward, Volume2, VolumeX } from "lucide-react";
+// video controls removed — intro plays and ends automatically
 import { useCallback, useEffect, useRef, useState } from "react";
 
 type CinematicIntroProps = {
@@ -185,21 +185,7 @@ export default function CinematicIntro({ onActiveChange, videoSrc = "/assets/int
             </div>
           )}
 
-          {phase === "video" && !failed && (
-            <>
-              <div className="absolute bottom-6 left-1/2 z-20 flex -translate-x-1/2 items-center gap-2 rounded-full border border-white/15 bg-black/35 p-2 shadow-2xl backdrop-blur-2xl opacity-0 transition-opacity duration-300 group-hover:opacity-100 focus-within:opacity-100">
-                <button onClick={togglePlay} className="rounded-full p-3 text-white transition hover:bg-white/10" aria-label={playing ? "Pause intro video" : "Play intro video"}>
-                {playing ? <Pause size={18} /> : <Play size={18} />}
-                </button>
-                <button onClick={toggleMuted} className="rounded-full p-3 text-white transition hover:bg-white/10" aria-label={muted ? "Unmute intro video" : "Mute intro video"}>
-                {muted ? <VolumeX size={18} /> : <Volume2 size={18} />}
-                </button>
-              </div>
-              <button onClick={finishIntro} className="absolute bottom-6 right-6 z-20 flex items-center gap-2 rounded-full border border-white/15 bg-black/35 px-4 py-3 text-sm font-semibold text-white shadow-2xl backdrop-blur-2xl transition hover:bg-white/15" aria-label="Skip intro">
-                <SkipForward size={16} /> Skip Intro
-              </button>
-            </>
-          )}
+
         </motion.section>
       )}
     </AnimatePresence>

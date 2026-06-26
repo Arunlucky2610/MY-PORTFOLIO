@@ -38,6 +38,12 @@ export default function Contact() {
           </form>
         </div>
       </div>
+      
+      {/* Blended Footer */}
+      <div className="mx-auto max-w-4xl mt-24 text-center relative z-10 pb-8">
+        <p className="mb-4 text-sm uppercase tracking-[0.45em] text-sky-200/70">Thanks for Visiting.</p>
+        <h2 className="text-4xl font-bold tracking-tight sm:text-6xl">Let&apos;s Build Something Amazing Together.</h2>
+      </div>
     </section>
   );
 }

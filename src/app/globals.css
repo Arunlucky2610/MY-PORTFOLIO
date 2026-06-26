@@ -137,9 +137,14 @@
   }
 }
 
+html[data-intro-active="true"] {
+  overflow: hidden !important;
+}
+
 html[data-intro-active="true"] .portfolio-shell {
   opacity: 0;
   pointer-events: none;
+  visibility: hidden;
 }
 
 html[data-intro-active="false"] .portfolio-shell {
