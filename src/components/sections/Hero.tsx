@@ -1,301 +1,99 @@
 "use client";
 
-import { useRef, useEffect } from "react";
-import Image from "next/image";
-import { motion } from "framer-motion";
-import dynamic from "next/dynamic";
+import { replayCinematicIntro } from "@/components/CinematicIntro";
+import { profile } from "@/data/portfolio";
 import gsap from "gsap";
-
-// Dynamically import Canvas3D to prevent SSR issues
-const Canvas3D = dynamic(() => import("@/components/layout/Canvas3D"), { 
-  ssr: false,
-  loading: () => <div className="w-full h-full bg-gradient-to-b from-background/50 to-background" />
-});
+import { ArrowDown, Mail, Play, Sparkles } from "lucide-react";
+import Image from "next/image";
+import type { MouseEvent } from "react";
+import { useEffect, useRef } from "react";
 
 export default function Hero() {
-  const subtitleRef = useRef<HTMLParagraphElement>(null);
+  const root = useRef<HTMLElement>(null);
+  const featuredCard = useRef<HTMLDivElement>(null);
+  const featuredImage = useRef<HTMLImageElement>(null);
 
   useEffect(() => {
-    if (subtitleRef.current) {
-      const text = "Full Stack Developer | AI Agent Builder | AI/ML Enthusiast | Data Analyst | Statathon 2025 Finalist";
-      subtitleRef.current.innerHTML = "";
-      
-      const chars = text.split("");
-      chars.forEach((char) => {
-        const span = document.createElement("span");
-        span.textContent = char;
-        span.style.opacity = "0";
-        subtitleRef.current?.appendChild(span);
-      });
-
-      gsap.to(subtitleRef.current.children, {
-        opacity: 1,
-        stagger: 0.05,
-        delay: 0.5,
-        duration: 0.1,
-        ease: "power2.inOut",
-      });
-    }
+    if (!root.current) return;
+    const ctx = gsap.context(() => {
+      gsap.from(".hero-reveal", { y: 36, opacity: 0, duration: 1, stagger: 0.12, ease: "power3.out" });
+    }, root);
+    return () => ctx.revert();
   }, []);
 
+  const handleFeaturedMove = (event: MouseEvent<HTMLDivElement>) => {
+    if (!featuredCard.current || !featuredImage.current) return;
+    const bounds = featuredCard.current.getBoundingClientRect();
+    const x = (event.clientX - bounds.left) / bounds.width - 0.5;
+    const y = (event.clientY - bounds.top) / bounds.height - 0.5;
+
+    gsap.to(featuredImage.current, {
+      scale: 1.07,
+      x: x * 12,
+      y: y * 10,
+      duration: 0.55,
+      ease: "power3.out",
+    });
+  };
+
+  const handleFeaturedLeave = () => {
+    if (!featuredImage.current) return;
+    gsap.to(featuredImage.current, {
+      scale: 1,
+      x: 0,
+      y: 0,
+      duration: 0.75,
+      ease: "power3.out",
+    });
+  };
+
   return (
-    <section className="relative min-h-screen w-full flex items-center justify-center overflow-hidden pt-28 sm:pt-32 md:pt-36 lg:pt-40 pb-10 sm:pb-16 md:pb-20">
-      {/* Enhanced Background 3D Canvas */}
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[250px] h-[250px] sm:w-[350px] sm:h-[350px] md:w-[450px] md:h-[450px] lg:w-[600px] lg:h-[600px] z-0 opacity-40 sm:opacity-50 lg:opacity-60 pointer-events-none overflow-hidden rounded-full">
-        <Canvas3D />
-      </div>
-
-      <div className="relative z-10 container mx-auto px-6 flex flex-col items-center justify-center text-center">
-        <motion.div
-          initial={{ scale: 0, opacity: 0 }}
-          animate={{ scale: 1, opacity: 1, y: [0, -15, 0] }}
-          transition={{ 
-            scale: { duration: 0.8, ease: "easeOut" },
-            opacity: { duration: 0.8, ease: "easeOut" },
-            y: { repeat: Infinity, duration: 4, ease: "easeInOut" }
-          }}
-          whileHover={{ scale: 1.1 }}
-          className="mb-16 sm:mb-20 md:mb-24 lg:mb-32 relative group cursor-pointer pointer-events-none"
-        >
-          {/* Animated rotating border */}
-          <motion.div
-            animate={{ rotate: 360 }}
-            transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
-            className="absolute inset-0 rounded-full bg-gradient-to-r from-purple-500 via-cyan-500 to-purple-500 opacity-0 group-hover:opacity-20 blur-xl"
-          />
-          
-          {/* Pulsing glow */}
-          <motion.div
-            animate={{ 
-              boxShadow: [
-                "0_0_50px_rgba(139,92,246,0.3)",
-                "0_0_100px_rgba(6,182,212,0.6)",
-                "0_0_50px_rgba(139,92,246,0.3)"
-              ]
-            }}
-            transition={{ duration: 3, repeat: Infinity }}
-            className="w-40 h-40 sm:w-48 sm:h-48 md:w-56 md:h-56 lg:w-72 lg:h-72 rounded-full glow-border p-2 relative"
-          >
-            <motion.div 
-              animate={{ 
-                rotate: [0, 2, -2, 0],
-                scale: [1, 1.02, 0.98, 1]
-              }}
-              transition={{ duration: 4, repeat: Infinity }}
-              className="w-full h-full rounded-full bg-surface-hover flex items-center justify-center text-4xl font-bold bg-cover bg-center overflow-hidden relative border-2 border-transparent group-hover:border-cyan-400 transition-colors duration-300"
-            >
-              <Image src="/ong-image.png" alt="Arun Sudhaveni" fill className="object-cover" priority sizes="(max-width: 768px) 150px, 200px" />
-              {/* Shine effect on hover */}
-              <motion.div
-                animate={{ x: ["-100%", "100%"] }}
-                transition={{ duration: 2, repeat: Infinity }}
-              />
-            </motion.div>
-          </motion.div>
-        </motion.div>
-
-        {/* Floating Technical Elements - Positioned on sides */}
-        {/* Removed for cleaner design */}
-
-        {/* Corner accent elements - Hidden on mobile for cleaner look */}
-        <motion.div
-          animate={{ rotate: 360 }}
-          transition={{ duration: 8, repeat: Infinity, ease: "linear" }}
-          className="hidden md:block absolute -top-20 -left-20 w-32 h-32 border border-purple-400/20 rounded-full"
-        />
-        <motion.div
-          animate={{ rotate: -360 }}
-          transition={{ duration: 10, repeat: Infinity, ease: "linear" }}
-          className="hidden md:block absolute -bottom-20 -right-20 w-40 h-40 border border-cyan-400/20 rounded-full"
-        />
-
-        {/* Featured Tech Icons in Workspace - Only show on large desktop */}
-        <div className="hidden lg:block pointer-events-none">
-          {[
-            { icon: '🐍', label: 'Python', top: '25%', left: '8%', delay: 0 },
-            { icon: '⚛️', label: 'React', top: '30%', right: '9%', delay: 0.2 },
-            { icon: '🔷', label: 'Django', top: '75%', left: '10%', delay: 0.4 },
-            { icon: '🌶️', label: 'Flask', top: '80%', right: '11%', delay: 0.6 },
-            { icon: '🟩', label: 'Node.js', top: '52%', right: '6%', delay: 0.8 },
-          ].map((tech, index) => (
-            <motion.div
-              key={index}
-              animate={{
-                y: [0, -15, 0],
-                rotate: [0, 360],
-              }}
-              transition={{
-                duration: 5 + index * 0.5,
-                repeat: Infinity,
-                ease: "easeInOut",
-                delay: tech.delay,
-              }}
-              whileHover={{
-                scale: 1.25,
-                boxShadow: "0 0 30px rgba(139, 92, 246, 0.8)",
-              }}
-              className="absolute group cursor-pointer"
-              style={{
-                top: tech.top,
-                left: tech.left,
-                right: tech.right,
-              }}
-            >
-              {/* Glowing circle background */}
-              <motion.div
-                animate={{
-                  boxShadow: [
-                    "0 0 15px rgba(139, 92, 246, 0.4)",
-                    "0 0 35px rgba(6, 182, 212, 0.7)",
-                    "0 0 15px rgba(139, 92, 246, 0.4)",
-                  ],
-                }}
-                transition={{ duration: 2, repeat: Infinity }}
-                className="absolute inset-0 rounded-full bg-gradient-to-br from-purple-500/25 to-cyan-500/25"
-                style={{ width: '70px', height: '70px' }}
-              />
-
-              {/* Icon container */}
-              <div className="relative w-16 h-16 rounded-full bg-slate-800 border-2 border-slate-700 flex items-center justify-center text-3xl group-hover:border-brand-primary/70 transition-all duration-300">
-                {tech.icon}
-              </div>
-
-              {/* Label tooltip */}
-              <motion.div
-                initial={{ opacity: 0, y: 10 }}
-                whileHover={{ opacity: 1, y: -35 }}
-                transition={{ duration: 0.2 }}
-                className="absolute left-1/2 -translate-x-1/2 px-3 py-1 bg-slate-900 border border-slate-700 rounded-full text-white text-xs font-semibold whitespace-nowrap"
-              >
-                {tech.label}
-              </motion.div>
-
-              {/* Pulse ring */}
-              <motion.div
-                animate={{
-                  scale: [1, 1.6, 2.2],
-                  opacity: [1, 0.5, 0],
-                }}
-                transition={{
-                  duration: 2.5,
-                  repeat: Infinity,
-                  delay: tech.delay,
-                }}
-                className="absolute inset-0 rounded-full border-2 border-cyan-400/60"
-                style={{ width: '70px', height: '70px' }}
-              />
-            </motion.div>
-          ))}
+    <section id="hero" ref={root} className="relative flex min-h-screen items-center overflow-hidden px-6 pb-20 pt-32">
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_25%,rgba(251,146,60,.18),transparent_30%),radial-gradient(circle_at_76%_40%,rgba(14,165,233,.18),transparent_33%)]" />
+      <div className="absolute inset-0 cinematic-grid opacity-30" />
+      <div className="mx-auto grid w-full max-w-7xl items-center gap-12 lg:grid-cols-[1.1fr_.9fr]">
+        <div className="relative z-10">
+          <div className="hero-reveal mb-6 inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/8 px-4 py-2 text-sm text-sky-100 backdrop-blur-xl">
+            <Sparkles size={16} className="text-orange-300" /> AI cinematic workspace online
+          </div>
+          <h1 className="hero-reveal max-w-5xl text-[clamp(3.3rem,10vw,8.5rem)] font-black uppercase leading-[0.88] tracking-normal">
+            Arun <span className="block text-gradient-cinema">Sudhaveni</span>
+          </h1>
+          <p className="hero-reveal mt-8 max-w-4xl text-lg font-semibold leading-8 text-white/85 sm:text-2xl">
+            Full Stack Developer | AI Agent Builder | AI/ML Enthusiast | Data Analyst | Statathon 2025 Finalist
+          </p>
+          <p className="hero-reveal mt-5 max-w-2xl text-xl leading-8 text-slate-300 sm:text-3xl sm:leading-10">{profile.tagline}</p>
+          <div className="hero-reveal mt-10 flex flex-col gap-3 sm:flex-row">
+            <a href="#projects" className="rounded-full bg-white px-7 py-4 text-center font-bold text-black transition hover:scale-[1.02] hover:bg-sky-100">View Projects</a>
+            <a href="#contact" className="inline-flex items-center justify-center gap-2 rounded-full border border-white/15 px-7 py-4 font-bold text-white transition hover:border-orange-300/60">
+              <Mail size={18} /> Contact
+            </a>
+            <button onClick={replayCinematicIntro} className="inline-flex items-center justify-center gap-2 rounded-full border border-white/15 bg-white/8 px-5 py-4 text-sm font-semibold text-white transition hover:bg-white/15" aria-label="Replay intro video">
+              <Play size={16} /> Replay Intro
+            </button>
+          </div>
         </div>
 
-        {/* Animated connecting lines - Simplified on mobile for performance */}
-        <svg className="hidden md:block absolute inset-0 w-full h-full pointer-events-none [filter:drop-shadow(0_0_2px_rgba(139,92,246,0.3))]">
-          <motion.circle
-            cx="50%"
-            cy="50%"
-            r="80"
-            fill="none"
-            stroke="url(#gradient)"
-            strokeWidth="1"
-            opacity="0.3"
-            animate={{ r: [80, 100, 80] }}
-            transition={{ duration: 4, repeat: Infinity }}
+        <div
+          ref={featuredCard}
+          onMouseMove={handleFeaturedMove}
+          onMouseLeave={handleFeaturedLeave}
+          className="relative min-h-[30rem] overflow-hidden rounded-3xl shadow-[0_0_90px_rgba(56,189,248,.22)]"
+        >
+          <Image
+            ref={featuredImage}
+            src="/ong-image.png"
+            alt="Featured Build visual"
+            fill
+            priority
+            className="absolute inset-0 h-full w-full object-cover object-center"
+            sizes="(max-width: 1024px) 90vw, 640px"
           />
-          <motion.circle
-            cx="50%"
-            cy="50%"
-            r="120"
-            fill="none"
-            stroke="url(#gradient)"
-            strokeWidth="0.5"
-            opacity="0.2"
-            animate={{ r: [120, 140, 120] }}
-            transition={{ duration: 6, repeat: Infinity, delay: 1 }}
-          />
-          <defs>
-            <linearGradient id="gradient" x1="0%" y1="0%" x2="100%" y2="100%">
-              <stop offset="0%" stopColor="#8b5cf6" />
-              <stop offset="100%" stopColor="#06b6d4" />
-            </linearGradient>
-          </defs>
-        </svg>
-
-        <motion.h1 
-          className="text-4xl sm:text-6xl md:text-7xl lg:text-8xl font-extrabold tracking-tight mb-3 sm:mb-4 relative z-20"
-          initial={{ y: 50, opacity: 0 }}
-          animate={{ y: 0, opacity: 1 }}
-          transition={{ duration: 0.8, delay: 0.2 }}
-        >
-          Arun Sudhaveni
-        </motion.h1>
-
-        <p 
-          ref={subtitleRef} 
-          className="text-sm sm:text-lg md:text-xl lg:text-2xl text-gray-300 font-medium mb-8 sm:mb-12 relative z-20"
-        />
-
-        <motion.div 
-          className="flex flex-col sm:flex-row gap-3 sm:gap-4 mb-16 sm:mb-20 relative z-20"
-          initial={{ y: 20, opacity: 0 }}
-          animate={{ y: 0, opacity: 1 }}
-          transition={{ duration: 0.5, delay: 1 }}
-        >
-          <a href="#projects" className="px-6 sm:px-8 py-3 sm:py-3 rounded-full bg-white text-black font-semibold hover:scale-105 transition-transform duration-300 flex justify-center text-sm sm:text-base touch-friendly">
-            View Projects
-          </a>
-          <a href="#contact" className="px-6 sm:px-8 py-3 sm:py-3 rounded-full glass glass-hover text-white font-semibold flex justify-center items-center text-sm sm:text-base touch-friendly">
-            Contact Me
-          </a>
-        </motion.div>
-
-        {/* AI Agent Builder Badge - Positioned Below Buttons */}
-        <motion.div
-          initial={{ scale: 0.8, opacity: 0, y: 10 }}
-          animate={{ scale: 1, opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 1.2 }}
-          className="relative z-20"
-        >
-          <div className="inline-block">
-            <motion.div
-              animate={{
-                boxShadow: [
-                  "0 0 20px rgba(139, 92, 246, 0.5)",
-                  "0 0 40px rgba(168, 85, 247, 0.8)",
-                  "0 0 20px rgba(139, 92, 246, 0.5)"
-                ]
-              }}
-              transition={{ duration: 2, repeat: Infinity }}
-              className="px-6 py-3 rounded-full bg-slate-900 border-2 border-slate-700 hover:border-brand-primary/70 transition-all duration-300 cursor-pointer"
-            >
-              <div className="flex items-center gap-2">
-                <span className="text-2xl">🤖</span>
-                <span className="font-bold text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-cyan-400">
-                  AI Agent Builder
-                </span>
-                <span className="ml-2 px-3 py-1 rounded-full bg-purple-500/50 text-sm font-semibold text-white">
-                  Featured
-                </span>
-              </div>
-              <p className="text-sm text-gray-300 mt-1">Survey AI Agent • LLM Integration • ML Predictive Analytics</p>
-            </motion.div>
-          </div>
-        </motion.div>
+        </div>
       </div>
-      
-      {/* Scroll indicator down */}
-      <motion.div 
-        className="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center"
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ delay: 2, duration: 1 }}
-      >
-        <span className="text-sm text-gray-400 mb-2 uppercase tracking-widest">Scroll</span>
-        <motion.div 
-          className="w-[1px] h-12 bg-gradient-to-b from-brand-primary to-transparent"
-          animate={{ height: ["0px", "48px", "0px"], y: [0, 24, 48] }}
-          transition={{ repeat: Infinity, duration: 2, ease: "easeInOut" }}
-        />
-      </motion.div>
+      <a href="#about" className="absolute bottom-8 left-1/2 z-10 -translate-x-1/2 rounded-full border border-white/15 bg-white/10 p-3 text-white backdrop-blur-xl" aria-label="Scroll to about">
+        <ArrowDown size={20} />
+      </a>
     </section>
   );
 }

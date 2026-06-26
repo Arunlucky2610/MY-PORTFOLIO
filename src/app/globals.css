@@ -83,6 +83,10 @@
     @apply bg-clip-text text-transparent bg-gradient-to-r from-brand-primary via-brand-secondary to-brand-accent;
   }
 
+  .text-gradient-cinema {
+    @apply bg-clip-text text-transparent bg-gradient-to-r from-orange-200 via-white to-sky-300;
+  }
+
   .glow-border {
     @apply flex relative before:absolute before:inset-0 before:-z-10 before:p-[1px] before:bg-gradient-to-r before:from-brand-primary before:via-brand-secondary before:to-brand-accent before:rounded-[inherit];
   }
@@ -105,11 +109,50 @@
   }
 }
 
-/* Mobile breakpoint override for floating tech icons */
-@media (max-width: 1023px) {
-  .hidden\.lg\:block {
-    display: none !important;
-    visibility: hidden !important;
+.cinematic-grid {
+  background-image:
+    linear-gradient(rgba(255,255,255,0.055) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,0.055) 1px, transparent 1px);
+  background-size: 72px 72px;
+  mask-image: radial-gradient(circle at center, black, transparent 72%);
+}
+
+.entry-particles {
+  background:
+    radial-gradient(circle at 18% 22%, rgba(251, 146, 60, 0.28) 0 2px, transparent 3px),
+    radial-gradient(circle at 72% 34%, rgba(125, 211, 252, 0.28) 0 2px, transparent 3px),
+    radial-gradient(circle at 42% 78%, rgba(255, 255, 255, 0.2) 0 1px, transparent 2px),
+    radial-gradient(circle at 86% 74%, rgba(251, 146, 60, 0.18) 0 2px, transparent 3px);
+  background-size: 180px 180px, 220px 220px, 140px 140px, 260px 260px;
+  animation: particlesDrift 14s linear infinite;
+  opacity: 0.7;
+}
+
+@keyframes particlesDrift {
+  from {
+    transform: translate3d(0, 0, 0);
+  }
+  to {
+    transform: translate3d(-80px, -60px, 0);
+  }
+}
+
+html[data-intro-active="true"] .portfolio-shell {
+  opacity: 0;
+  pointer-events: none;
+}
+
+html[data-intro-active="false"] .portfolio-shell {
+  opacity: 1;
+  transition: opacity 900ms ease;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    scroll-behavior: auto !important;
+    transition-duration: 0.001ms !important;
   }
 }
 

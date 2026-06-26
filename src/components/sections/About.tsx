@@ -1,83 +1,80 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { Trophy, Code2, Database, Rocket, Users } from "lucide-react";
 
-const highlights = [
+const aboutCards = [
   {
-    icon: <Trophy className="w-8 h-8 text-brand-primary" />,
+    icon: "🏆",
     title: "Statathon 2025 Finalist",
-    description: "National-level finalist at Statathon 2025 - A Data Journey for Viksit Bharat. Competing among top teams in data analytics.",
   },
   {
-    icon: <Users className="w-8 h-8 text-cyan-400" />,
-    title: "Team Leader",
-    description: "Led high-performing teams across multiple national hackathons. Drive innovation, execution, and deliver under pressure.",
+    icon: "💼",
+    title: "7+ Months Full Stack Experience",
   },
   {
-    icon: <Rocket className="w-8 h-8 text-brand-accent" />,
-    title: "₹50K Seed Funding",
-    description: "Secured seed funding for an innovative startup. Successfully pitched to investors and validated product-market fit.",
+    icon: "🤖",
+    title: "AI & Full Stack Engineer",
   },
   {
-    icon: <Database className="w-8 h-8 text-brand-secondary" />,
-    title: "Full Stack Builder",
-    description: "End-to-end development expertise: FastAPI backends, PostgreSQL databases, React frontends, and scalable architectures.",
+    icon: "🚀",
+    title: "10+ Production Projects",
   },
+];
+
+const paragraphs = [
+  "I'm Arun Sudhaveni, a Full Stack Developer and AI/ML Engineer passionate about building intelligent software, scalable platforms, and AI-powered products that solve real-world problems.",
+  "I specialize in React, Next.js, FastAPI, PostgreSQL, Docker, and AI technologies. My focus is creating high-performance applications with exceptional UI/UX and production-ready architecture.",
+  "My biggest achievement is building Survey AI for the Ministry of Statistics (MoSPI) during Statathon 2025, transforming complex government datasets into AI-powered insights through natural language.",
+  "Beyond coding, I enjoy leading teams, learning emerging AI technologies, solving challenging problems, and building products that create real impact.",
 ];
 
 export default function About() {
   return (
-    <section id="about" className="py-24 relative z-10 w-full overflow-hidden">
-      <div className="container mx-auto px-6 max-w-6xl">
+    <section id="about" className="relative w-full overflow-hidden px-6 py-28">
+      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_18%_20%,rgba(251,146,60,.16),transparent_28%),radial-gradient(circle_at_86%_34%,rgba(56,189,248,.16),transparent_30%)]" />
+      <div className="entry-particles pointer-events-none absolute inset-0 opacity-35" />
+
+      <div className="relative mx-auto grid max-w-7xl gap-12 lg:grid-cols-[1.05fr_.95fr] lg:items-center">
         <motion.div
-          initial={{ opacity: 0, y: 50 }}
+          initial={{ opacity: 0, y: 26 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-100px" }}
-          transition={{ duration: 0.8 }}
-          className="flex flex-col lg:flex-row gap-16 items-center"
+          transition={{ duration: 0.75, ease: "easeOut" }}
+          className="max-w-3xl"
         >
-          {/* Text Content */}
-          <div className="lg:w-1/2 space-y-6">
-            <h2 className="text-4xl md:text-5xl font-bold mb-4">
-              <span className="text-gradient">About Me</span>
-            </h2>
-            <p className="text-lg text-gray-300 leading-relaxed">
-              I'm <strong className="text-white">Arun Sudhaveni</strong> — a developer driven by curiosity, creativity, and the desire to build things that actually matter. I don't just write code — I design <strong className="text-white">solutions</strong>.
-            </p>
-            <p className="text-lg text-gray-300 leading-relaxed">
-              My work sits at the intersection of <strong className="text-white">web development, data systems, and AI</strong>, where I focus on transforming complex ideas into simple, powerful, and user-friendly products. I enjoy taking messy problems and turning them into clean, scalable systems that people can rely on.
-            </p>
-            <p className="text-lg text-gray-300 leading-relaxed">
-              One of my defining experiences was building <strong className="text-white">Mopsi Data Portal</strong>, a project aimed at making government data accessible and meaningful. It was recognized as a <strong className="text-white">Top 4 finalist in a national-level hackathon</strong> and backed with seed funding — validating not just the idea, but the impact it can create.
-            </p>
-            <p className="text-sm text-gray-400 leading-relaxed font-semibold mt-4">
-              <span className="text-brand-primary">What sets me apart:</span> I learn fast and build faster. I focus on real-world impact, not just theory. I constantly push my limits through hands-on projects. As a <strong className="text-white">team leader in hackathons</strong>, I've honed my ability to lead high-performing teams, drive innovation, and deliver under pressure.
-            </p>
-          </div>
-
-          {/* Highlights Grid */}
-          <div className="lg:w-1/2 grid grid-cols-1 md:grid-cols-2 gap-6">
-            {highlights.map((item, index) => (
-              <motion.div
-                key={item.title}
-                initial={{ opacity: 0, scale: 0.9 }}
-                whileInView={{ opacity: 1, scale: 1 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.5, delay: index * 0.1 }}
-                className="glass glass-hover p-6 rounded-2xl flex flex-col gap-4 h-full"
-              >
-                <div className="p-3 bg-slate-800 rounded-lg w-fit">
-                  {item.icon}
-                </div>
-                <div>
-                  <h3 className="text-xl font-bold text-white mb-2">{item.title}</h3>
-                  <p className="text-sm text-gray-400">{item.description}</p>
-                </div>
-              </motion.div>
+          <p className="mb-4 text-sm uppercase tracking-[0.4em] text-sky-200/70">About</p>
+          <h2 className="text-5xl font-black tracking-tight text-gradient-cinema sm:text-7xl">
+            About Me
+          </h2>
+          <div className="mt-8 space-y-5 text-base leading-8 text-slate-300 sm:text-lg">
+            {paragraphs.map((paragraph) => (
+              <p key={paragraph}>{paragraph}</p>
             ))}
           </div>
         </motion.div>
+
+        <div className="grid gap-4 sm:grid-cols-2">
+          {aboutCards.map((card, index) => (
+            <motion.article
+              key={card.title}
+              initial={{ opacity: 0, y: 28, scale: 0.96 }}
+              whileInView={{ opacity: 1, y: 0, scale: 1 }}
+              viewport={{ once: true, margin: "-80px" }}
+              transition={{ duration: 0.65, delay: index * 0.08, ease: "easeOut" }}
+              whileHover={{ y: -8, scale: 1.02 }}
+              className="group relative min-h-44 overflow-hidden rounded-3xl border border-white/10 bg-white/[0.055] p-6 shadow-2xl shadow-black/25 backdrop-blur-2xl"
+            >
+              <div className="absolute inset-0 opacity-0 transition duration-500 group-hover:opacity-100 bg-[radial-gradient(circle_at_30%_0%,rgba(255,255,255,.16),transparent_34%),linear-gradient(135deg,rgba(251,146,60,.16),transparent_42%,rgba(56,189,248,.16))]" />
+              <div className="absolute inset-px rounded-[23px] border border-white/5" />
+              <div className="relative">
+                <div className="mb-6 flex h-14 w-14 items-center justify-center rounded-2xl border border-white/10 bg-black/30 text-3xl shadow-[0_0_40px_rgba(56,189,248,.14)]">
+                  {card.icon}
+                </div>
+                <h3 className="text-xl font-bold leading-snug text-white">{card.title}</h3>
+              </div>
+            </motion.article>
+          ))}
+        </div>
       </div>
     </section>
   );

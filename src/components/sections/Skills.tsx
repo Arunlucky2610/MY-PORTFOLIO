@@ -1,221 +1,189 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { AnimatePresence, motion } from "framer-motion";
+import { X } from "lucide-react";
+import { useState } from "react";
 
-const skillCategories = [
+type StackSection = {
+  icon: string;
+  title: string;
+  description: string;
+  logos: string[];
+  skills: string[];
+  projects: string[];
+};
+
+const stackSections: StackSection[] = [
   {
-    title: "Backend Development",
-    icon: "⚡",
-    bgGradient: "from-orange-600/20 via-orange-500/10 to-transparent",
-    borderColor: "from-orange-500 to-red-500",
-    skills: ["FastAPI", "Node.js", "Express.js", "REST APIs", "Microservices"],
-    proficiency: 95,
-  },
-  {
-    title: "Databases",
-    icon: "🗄️",
-    bgGradient: "from-cyan-600/20 via-cyan-500/10 to-transparent",
-    borderColor: "from-cyan-500 to-blue-500",
-    skills: ["PostgreSQL", "MongoDB", "Redis", "SQL", "Database Design"],
-    proficiency: 88,
-  },
-  {
-    title: "Programming Languages",
-    icon: "🐍",
-    bgGradient: "from-purple-600/20 via-purple-500/10 to-transparent",
-    borderColor: "from-purple-500 to-pink-500",
-    skills: ["Python", "JavaScript", "TypeScript", "Java", "SQL"],
-    proficiency: 90,
-  },
-  {
-    title: "Data Structures & Algorithms",
-    icon: "🔗",
-    bgGradient: "from-rose-600/20 via-rose-500/10 to-transparent",
-    borderColor: "from-rose-500 to-pink-500",
-    skills: ["100+ LeetCode Problems", "DSA Fundamentals", "Arrays & Strings", "Trees & Graphs", "Dynamic Programming"],
-    proficiency: 82,
-  },
-  {
-    title: "Frontend Development",
     icon: "⚛️",
-    bgGradient: "from-blue-600/20 via-blue-500/10 to-transparent",
-    borderColor: "from-blue-500 to-cyan-500",
-    skills: ["React", "Next.js", "Tailwind CSS", "Framer Motion", "UI Design"],
-    proficiency: 85,
+    title: "Frontend",
+    description: "Premium interfaces, responsive layouts, and motion-rich product experiences.",
+    logos: ["React", "Next.js", "TS", "Tailwind", "Motion"],
+    skills: ["React", "Next.js", "TypeScript", "Tailwind CSS", "Framer Motion", "Responsive UI", "Component Systems"],
+    projects: ["Portfolio", "Survey AI Dashboard", "RapidSkill"],
   },
   {
-    title: "Data & Analytics",
-    icon: "📊",
-    bgGradient: "from-green-600/20 via-green-500/10 to-transparent",
-    borderColor: "from-green-500 to-emerald-500",
-    skills: ["Data Analysis", "Python Data Tools", "Visualization", "Statistical Analysis", "Insights"],
-    proficiency: 90,
+    icon: "⚡",
+    title: "Backend",
+    description: "Fast APIs, secure auth, and scalable architecture for production applications.",
+    logos: ["Python", "FastAPI", "REST", "JWT", "API"],
+    skills: ["Python", "FastAPI", "REST API", "JWT Auth", "Pydantic", "OpenAPI", "Microservices"],
+    projects: ["Survey AI", "Translation Portal", "Learning Platforms"],
   },
   {
-    title: "DevOps & Tools",
-    icon: "🐳",
-    bgGradient: "from-indigo-600/20 via-indigo-500/10 to-transparent",
-    borderColor: "from-indigo-500 to-purple-500",
-    skills: ["Docker", "Git", "GitHub", "CI/CD", "Linux"],
-    proficiency: 82,
+    icon: "🤖",
+    title: "AI",
+    description: "Applied AI systems for natural language, analytics, automation, and vision.",
+    logos: ["AI/ML", "LLMs", "OpenAI", "Gemini", "Vision"],
+    skills: ["AI/ML", "LLMs", "OpenAI", "Gemini", "Computer Vision", "Prompt Engineering", "AI Agents"],
+    projects: ["Survey AI", "AI Traffic System", "Oral Health AI"],
+  },
+  {
+    icon: "🗄️",
+    title: "Database",
+    description: "Structured data models, reliable querying, and analytics-ready storage.",
+    logos: ["Postgres", "SQL", "ETL", "Indexes", "Data"],
+    skills: ["PostgreSQL", "SQL", "Data Modeling", "Indexes", "ETL Pipelines", "Analytics Schemas"],
+    projects: ["MoSPI Data Portal", "Survey AI", "Dashboards"],
+  },
+  {
+    icon: "🚀",
+    title: "DevOps",
+    description: "Practical deployment workflows, containers, source control, and Linux tooling.",
+    logos: ["Docker", "Git", "GitHub", "Linux", "CI/CD"],
+    skills: ["Docker", "Git", "GitHub", "Linux", "CI/CD", "Deployment", "Environment Setup"],
+    projects: ["Portfolio", "Survey AI APIs", "Production Backends"],
   },
 ];
 
-const containerVariants = {
-  hidden: { opacity: 0 },
-  visible: {
-    opacity: 1,
-    transition: {
-      staggerChildren: 0.1,
-      delayChildren: 0.2,
-    },
-  },
-};
-
-const itemVariants = {
-  hidden: { opacity: 0, y: 20 },
-  visible: {
-    opacity: 1,
-    y: 0,
-    transition: { duration: 0.5 },
-  },
-};
+const currentlyBuilding = ["Survey AI", "MoSPI Data Portal", "AI Traffic System", "Oral Health AI"];
 
 export default function Skills() {
-  return (
-    <section id="skills" className="py-32 relative z-10 overflow-hidden">
-      {/* Background Elements */}
-      <div className="absolute inset-0 -z-10">
-        <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-gradient-to-br from-brand-primary/10 to-brand-accent/5 rounded-full blur-3xl" />
-        <div className="absolute bottom-0 left-0 w-[600px] h-[600px] bg-gradient-to-tr from-brand-accent/10 to-brand-primary/5 rounded-full blur-3xl" />
-      </div>
+  const [active, setActive] = useState<StackSection | null>(null);
 
-      <div className="container mx-auto px-6 max-w-7xl">
-        {/* Header */}
+  return (
+    <section id="skills" className="relative overflow-hidden px-6 py-28">
+      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_18%_18%,rgba(56,189,248,.14),transparent_30%),radial-gradient(circle_at_82%_42%,rgba(251,146,60,.12),transparent_28%)]" />
+
+      <div className="relative mx-auto max-w-7xl">
+        <div className="mb-14 max-w-3xl">
+          <p className="mb-4 text-sm uppercase tracking-[0.35em] text-sky-200/70">Skills</p>
+          <h2 className="text-4xl font-black tracking-tight text-gradient-cinema sm:text-6xl">Tech Stack</h2>
+          <p className="mt-5 text-lg leading-8 text-slate-300">
+            A focused engineering stack for building intelligent products with clean UI, fast APIs, and production-ready systems.
+          </p>
+        </div>
+
+        <div className="space-y-4">
+          {stackSections.map((section, index) => (
+            <motion.button
+              key={section.title}
+              type="button"
+              onClick={() => setActive(section)}
+              initial={{ opacity: 0, y: 24 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: "-80px" }}
+              transition={{ duration: 0.55, delay: index * 0.06, ease: "easeOut" }}
+              whileHover={{ y: -4 }}
+              className="group relative w-full overflow-hidden rounded-3xl border border-white/10 bg-white/[0.055] p-5 text-left shadow-2xl shadow-black/20 backdrop-blur-2xl transition hover:border-sky-200/30 sm:p-6"
+            >
+              <div className="absolute inset-0 opacity-0 transition duration-500 group-hover:opacity-100 bg-[linear-gradient(120deg,rgba(255,255,255,.12),transparent_38%,rgba(56,189,248,.12))]" />
+              <div className="relative grid gap-5 lg:grid-cols-[4rem_1fr_auto_auto] lg:items-center">
+                <div className="flex h-16 w-16 items-center justify-center rounded-2xl border border-white/10 bg-black/30 text-4xl shadow-[0_0_45px_rgba(56,189,248,.12)]">
+                  {section.icon}
+                </div>
+                <div>
+                  <h3 className="text-2xl font-bold text-white">{section.title}</h3>
+                  <p className="mt-2 max-w-2xl leading-7 text-slate-300">{section.description}</p>
+                </div>
+                <div className="flex flex-wrap gap-2 lg:justify-end">
+                  {section.logos.map((logo) => (
+                    <span key={logo} className="rounded-full border border-white/10 bg-black/25 px-3 py-2 text-xs font-semibold text-slate-300 transition group-hover:text-white">
+                      {logo}
+                    </span>
+                  ))}
+                </div>
+                <div className="w-fit rounded-full border border-white/10 bg-white px-4 py-2 text-xs font-black uppercase tracking-[0.18em] text-black">
+                  {section.skills.length} Tech
+                </div>
+              </div>
+            </motion.button>
+          ))}
+        </div>
+
         <motion.div
-          initial={{ opacity: 0, y: 30 }}
+          initial={{ opacity: 0, y: 24 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          transition={{ duration: 0.7 }}
-          className="text-center mb-24"
+          className="mt-8 rounded-3xl border border-white/10 bg-white/[0.045] p-6 shadow-2xl shadow-black/20 backdrop-blur-2xl"
         >
-          <div className="inline-block mb-6 px-4 py-2 rounded-full border border-brand-primary/50 bg-brand-primary/10">
-            <span className="text-sm font-semibold text-brand-accent">Professional Expertise</span>
+          <h3 className="text-xl font-bold text-white">Currently Building</h3>
+          <div className="mt-5 flex flex-wrap gap-3">
+            {currentlyBuilding.map((project) => (
+              <span key={project} className="rounded-full border border-white/10 bg-black/25 px-4 py-3 text-sm font-semibold text-slate-300">
+                {project}
+              </span>
+            ))}
           </div>
-          <h2 className="text-5xl md:text-6xl font-bold mb-6 tracking-tight">
-            <span className="text-gradient">Technical Mastery</span>
-          </h2>
-          <p className="text-lg text-gray-400 max-w-3xl mx-auto leading-relaxed">
-            A proven track record in full-stack development, scalable architectures, and data-driven solutions.
-          </p>
         </motion.div>
+      </div>
 
-        {/* Skills Grid */}
-        <motion.div
-          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-20"
-          variants={containerVariants}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, margin: "-100px" }}
-        >
-          {skillCategories.map((category, idx) => (
+      <AnimatePresence>
+        {active && (
+          <motion.div
+            className="fixed inset-0 z-[80] flex items-center justify-center bg-black/70 px-4 backdrop-blur-xl"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            onClick={() => setActive(null)}
+          >
             <motion.div
-              key={category.title}
-              variants={itemVariants}
-              className="group relative h-full"
+              initial={{ opacity: 0, y: 30, scale: 0.96 }}
+              animate={{ opacity: 1, y: 0, scale: 1 }}
+              exit={{ opacity: 0, y: 30, scale: 0.96 }}
+              transition={{ duration: 0.25 }}
+              onClick={(event) => event.stopPropagation()}
+              className="relative w-full max-w-2xl overflow-hidden rounded-[2rem] border border-white/10 bg-slate-950/95 p-7 shadow-2xl shadow-black/50"
             >
-              {/* Gradient Border */}
-              <div className={`absolute inset-0 rounded-2xl bg-gradient-to-r ${category.borderColor} opacity-0 group-hover:opacity-100 transition-opacity duration-500 blur p-[1px]`}>
-                <div className="absolute inset-0 rounded-2xl bg-background" />
+              <button onClick={() => setActive(null)} className="absolute right-5 top-5 rounded-full border border-white/10 p-2 text-white/70 hover:bg-white/10" aria-label="Close tech stack modal">
+                <X size={18} />
+              </button>
+              <div className="flex items-center gap-4">
+                <div className="flex h-16 w-16 items-center justify-center rounded-2xl border border-white/10 bg-white/10 text-4xl">
+                  {active.icon}
+                </div>
+                <div>
+                  <p className="text-xs uppercase tracking-[0.3em] text-sky-200/70">Tech Area</p>
+                  <h3 className="mt-1 text-4xl font-black text-white">{active.title}</h3>
+                </div>
+              </div>
+              <p className="mt-6 leading-7 text-slate-300">{active.description}</p>
+
+              <div className="mt-7">
+                <p className="mb-3 text-sm font-bold uppercase tracking-[0.2em] text-white/70">All Skills</p>
+                <div className="flex flex-wrap gap-2">
+                  {active.skills.map((skill) => (
+                    <span key={skill} className="rounded-full border border-white/10 bg-white/[0.06] px-3 py-2 text-sm text-slate-300">
+                      {skill}
+                    </span>
+                  ))}
+                </div>
               </div>
 
-              {/* Card */}
-              <div className={`relative h-full p-8 rounded-2xl bg-slate-900 border border-slate-700 group-hover:border-brand-primary/50 transition-all duration-500 overflow-hidden`}>
-                {/* Icon */}
-                <motion.div
-                  animate={{ y: [0, -5, 0] }}
-                  transition={{ duration: 3, repeat: Infinity }}
-                  className="text-5xl mb-4 group-hover:scale-110 transition-transform duration-300"
-                >
-                  {category.icon}
-                </motion.div>
-
-                {/* Title */}
-                <h3 className="text-xl font-bold text-white mb-4 group-hover:text-brand-accent transition-colors duration-300">
-                  {category.title}
-                </h3>
-
-                {/* Proficiency Bar */}
-                <div className="mb-6 pt-2">
-                  <div className="flex justify-between items-center mb-2">
-                    <span className="text-xs font-semibold text-gray-400">Proficiency</span>
-                    <span className="text-xs font-bold text-brand-accent">{category.proficiency}%</span>
-                  </div>
-                  <div className="h-1.5 w-full bg-slate-800 rounded-full overflow-hidden">
-                    <motion.div
-                      className={`h-full bg-gradient-to-r ${category.borderColor} rounded-full`}
-                      initial={{ width: 0 }}
-                      whileInView={{ width: `${category.proficiency}%` }}
-                      viewport={{ once: true }}
-                      transition={{ duration: 1.2, delay: idx * 0.1 }}
-                    />
-                  </div>
-                </div>
-
-                {/* Skills List */}
-                <div className="space-y-2">
-                  {category.skills.map((skill, skillIdx) => (
-                    <motion.div
-                      key={skill}
-                      initial={{ opacity: 0, x: -10 }}
-                      whileInView={{ opacity: 1, x: 0 }}
-                      viewport={{ once: true }}
-                      transition={{ delay: idx * 0.1 + skillIdx * 0.04 }}
-                      className="flex items-center gap-3 text-gray-300 group-hover:text-gray-100 transition-colors"
-                    >
-                      <motion.div
-                        className="w-2 h-2 rounded-full bg-gradient-to-r from-brand-primary to-brand-accent"
-                        whileHover={{ scale: 1.5 }}
-                      />
-                      <span className="text-sm font-medium">{skill}</span>
-                    </motion.div>
+              <div className="mt-7">
+                <p className="mb-3 text-sm font-bold uppercase tracking-[0.2em] text-white/70">Related Projects</p>
+                <div className="grid gap-2 sm:grid-cols-3">
+                  {active.projects.map((project) => (
+                    <div key={project} className="rounded-2xl border border-white/10 bg-black/25 p-4 text-sm font-semibold text-slate-300">
+                      {project}
+                    </div>
                   ))}
                 </div>
               </div>
             </motion.div>
-          ))}
-        </motion.div>
-
-        {/* Stats Section */}
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ delay: 0.6 }}
-          className="grid grid-cols-1 md:grid-cols-3 gap-8 pt-20 border-t border-white/10"
-        >
-          {[
-            { number: "100+", label: "LeetCode Problems Solved" },
-            { number: "6", label: "Tech Categories" },
-            { number: "Passionate", label: "Problem Solver" },
-          ].map((stat, idx) => (
-            <motion.div
-              key={stat.label}
-              whileHover={{ y: -5 }}
-              className="relative p-8 rounded-2xl bg-slate-900 border border-slate-700 text-center group hover:border-brand-primary/50 transition-all duration-300"
-            >
-              <motion.div
-                animate={{ scale: [1, 1.05, 1] }}
-                transition={{ duration: 2, repeat: Infinity }}
-                className="text-4xl font-bold text-gradient mb-3"
-              >
-                {stat.number}
-              </motion.div>
-              <p className="text-gray-400 text-sm font-medium">{stat.label}</p>
-            </motion.div>
-          ))}
-        </motion.div>
-      </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </section>
   );
 }
