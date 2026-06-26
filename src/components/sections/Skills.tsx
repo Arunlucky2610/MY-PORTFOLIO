@@ -1,189 +1,270 @@
 "use client";
 
-import { AnimatePresence, motion } from "framer-motion";
-import { X } from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
+import { Monitor, Server, Sparkles, Database, ArrowRight } from "lucide-react";
 import { useState } from "react";
 
-type StackSection = {
-  icon: string;
-  title: string;
-  description: string;
-  logos: string[];
-  skills: string[];
-  projects: string[];
+type Tech = {
+  name: string;
+  slug: string;
+  label: string;
+  percentage: number;
 };
 
-const stackSections: StackSection[] = [
+type TechGroup = {
+  id: string;
+  name: string;
+  icon: any;
+  technologies: Tech[];
+  usedIn: string[];
+  description: string;
+};
+
+const groups: TechGroup[] = [
   {
-    icon: "⚛️",
-    title: "Frontend",
-    description: "Premium interfaces, responsive layouts, and motion-rich product experiences.",
-    logos: ["React", "Next.js", "TS", "Tailwind", "Motion"],
-    skills: ["React", "Next.js", "TypeScript", "Tailwind CSS", "Framer Motion", "Responsive UI", "Component Systems"],
-    projects: ["Portfolio", "Survey AI Dashboard", "RapidSkill"],
+    id: "frontend",
+    name: "Frontend",
+    icon: Monitor,
+    description: "Architecting fluid, component-driven interfaces with rich motion and precision styling.",
+    usedIn: ["RapidSkill", "Survey AI Dashboard", "Portfolio"],
+    technologies: [
+      { name: "React", slug: "react", label: "Primary", percentage: 90 },
+      { name: "Next.js", slug: "nextdotjs", label: "Production", percentage: 80 },
+      { name: "TypeScript", slug: "typescript", label: "Daily", percentage: 75 },
+      { name: "Tailwind", slug: "tailwindcss", label: "Daily", percentage: 90 },
+      { name: "Framer", slug: "framer", label: "Current", percentage: 80 },
+    ],
   },
   {
-    icon: "⚡",
-    title: "Backend",
-    description: "Fast APIs, secure auth, and scalable architecture for production applications.",
-    logos: ["Python", "FastAPI", "REST", "JWT", "API"],
-    skills: ["Python", "FastAPI", "REST API", "JWT Auth", "Pydantic", "OpenAPI", "Microservices"],
-    projects: ["Survey AI", "Translation Portal", "Learning Platforms"],
+    id: "backend",
+    name: "Backend",
+    icon: Server,
+    description: "Building resilient microservices, high-throughput APIs, and secure authentication flows.",
+    usedIn: ["Survey AI APIs", "MNRG Backend"],
+    technologies: [
+      { name: "Python", slug: "python", label: "Primary", percentage: 85 },
+      { name: "FastAPI", slug: "fastapi", label: "Production", percentage: 85 },
+      { name: "Node.js", slug: "nodedotjs", label: "Current", percentage: 75 },
+    ],
   },
   {
-    icon: "🤖",
-    title: "AI",
-    description: "Applied AI systems for natural language, analytics, automation, and vision.",
-    logos: ["AI/ML", "LLMs", "OpenAI", "Gemini", "Vision"],
-    skills: ["AI/ML", "LLMs", "OpenAI", "Gemini", "Computer Vision", "Prompt Engineering", "AI Agents"],
-    projects: ["Survey AI", "AI Traffic System", "Oral Health AI"],
+    id: "ai",
+    name: "AI",
+    icon: Sparkles,
+    description: "Integrating large language models for autonomous decision making and data synthesis.",
+    usedIn: ["MNRG Brain", "Survey Intelligence", "Oral Health AI"],
+    technologies: [
+      { name: "OpenAI", slug: "openai", label: "Production", percentage: 75 },
+      { name: "Gemini", slug: "googlegemini", label: "Current", percentage: 75 },
+    ],
   },
   {
-    icon: "🗄️",
-    title: "Database",
-    description: "Structured data models, reliable querying, and analytics-ready storage.",
-    logos: ["Postgres", "SQL", "ETL", "Indexes", "Data"],
-    skills: ["PostgreSQL", "SQL", "Data Modeling", "Indexes", "ETL Pipelines", "Analytics Schemas"],
-    projects: ["MoSPI Data Portal", "Survey AI", "Dashboards"],
-  },
-  {
-    icon: "🚀",
-    title: "DevOps",
-    description: "Practical deployment workflows, containers, source control, and Linux tooling.",
-    logos: ["Docker", "Git", "GitHub", "Linux", "CI/CD"],
-    skills: ["Docker", "Git", "GitHub", "Linux", "CI/CD", "Deployment", "Environment Setup"],
-    projects: ["Portfolio", "Survey AI APIs", "Production Backends"],
+    id: "data",
+    name: "Data",
+    icon: Database,
+    description: "Designing structured relational models and optimized vector storage for context retrieval.",
+    usedIn: ["MoSPI Data Portal", "Survey AI Analytics"],
+    technologies: [
+      { name: "PostgreSQL", slug: "postgresql", label: "Primary", percentage: 80 },
+      { name: "Docker", slug: "docker", label: "Current", percentage: 60 },
+    ],
   },
 ];
 
-const currentlyBuilding = ["Survey AI", "MoSPI Data Portal", "AI Traffic System", "Oral Health AI"];
+const containerVariants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: { staggerChildren: 0.15, delayChildren: 0.1 },
+  },
+};
+
+const itemVariants = {
+  hidden: { opacity: 0, y: 30 },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.8, ease: [0.16, 1, 0.3, 1] } },
+};
 
 export default function Skills() {
-  const [active, setActive] = useState<StackSection | null>(null);
+  const [activeGroupId, setActiveGroupId] = useState<string | null>(null);
+  const activeGroup = groups.find(g => g.id === activeGroupId);
 
   return (
-    <section id="skills" className="relative overflow-hidden px-6 py-28">
-      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_18%_18%,rgba(56,189,248,.14),transparent_30%),radial-gradient(circle_at_82%_42%,rgba(251,146,60,.12),transparent_28%)]" />
+    <section id="skills" className="flex min-h-screen items-center bg-black px-6 py-32 sm:py-48 font-sans">
+      <div className="mx-auto w-full max-w-[1400px]">
 
-      <div className="relative mx-auto max-w-7xl">
-        <div className="mb-14 max-w-3xl">
-          <p className="mb-4 text-sm uppercase tracking-[0.35em] text-sky-200/70">Skills</p>
-          <h2 className="text-4xl font-black tracking-tight text-gradient-cinema sm:text-6xl">Tech Stack</h2>
-          <p className="mt-5 text-lg leading-8 text-slate-300">
-            A focused engineering stack for building intelligent products with clean UI, fast APIs, and production-ready systems.
-          </p>
-        </div>
-
-        <div className="space-y-4">
-          {stackSections.map((section, index) => (
-            <motion.button
-              key={section.title}
-              type="button"
-              onClick={() => setActive(section)}
-              initial={{ opacity: 0, y: 24 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: "-80px" }}
-              transition={{ duration: 0.55, delay: index * 0.06, ease: "easeOut" }}
-              whileHover={{ y: -4 }}
-              className="group relative w-full overflow-hidden rounded-3xl border border-white/10 bg-white/[0.055] p-5 text-left shadow-2xl shadow-black/20 backdrop-blur-2xl transition hover:border-sky-200/30 sm:p-6"
-            >
-              <div className="absolute inset-0 opacity-0 transition duration-500 group-hover:opacity-100 bg-[linear-gradient(120deg,rgba(255,255,255,.12),transparent_38%,rgba(56,189,248,.12))]" />
-              <div className="relative grid gap-5 lg:grid-cols-[4rem_1fr_auto_auto] lg:items-center">
-                <div className="flex h-16 w-16 items-center justify-center rounded-2xl border border-white/10 bg-black/30 text-4xl shadow-[0_0_45px_rgba(56,189,248,.12)]">
-                  {section.icon}
-                </div>
-                <div>
-                  <h3 className="text-2xl font-bold text-white">{section.title}</h3>
-                  <p className="mt-2 max-w-2xl leading-7 text-slate-300">{section.description}</p>
-                </div>
-                <div className="flex flex-wrap gap-2 lg:justify-end">
-                  {section.logos.map((logo) => (
-                    <span key={logo} className="rounded-full border border-white/10 bg-black/25 px-3 py-2 text-xs font-semibold text-slate-300 transition group-hover:text-white">
-                      {logo}
-                    </span>
-                  ))}
-                </div>
-                <div className="w-fit rounded-full border border-white/10 bg-white px-4 py-2 text-xs font-black uppercase tracking-[0.18em] text-black">
-                  {section.skills.length} Tech
-                </div>
-              </div>
-            </motion.button>
-          ))}
-        </div>
-
+        {/* Header */}
         <motion.div
-          initial={{ opacity: 0, y: 24 }}
+          initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          className="mt-8 rounded-3xl border border-white/10 bg-white/[0.045] p-6 shadow-2xl shadow-black/20 backdrop-blur-2xl"
+          viewport={{ once: true, margin: "-100px" }}
+          transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
+          className="max-w-4xl"
         >
-          <h3 className="text-xl font-bold text-white">Currently Building</h3>
-          <div className="mt-5 flex flex-wrap gap-3">
-            {currentlyBuilding.map((project) => (
-              <span key={project} className="rounded-full border border-white/10 bg-black/25 px-4 py-3 text-sm font-semibold text-slate-300">
-                {project}
-              </span>
-            ))}
-          </div>
+          <h2 className="mb-6 text-5xl font-semibold tracking-tight text-white sm:text-7xl lg:text-8xl">
+            Technologies.
+          </h2>
+          <p className="mb-20 max-w-2xl text-xl font-light tracking-wide text-neutral-400 sm:text-3xl leading-relaxed">
+            Building thoughtful digital products with modern technologies.
+          </p>
         </motion.div>
-      </div>
 
-      <AnimatePresence>
-        {active && (
+        {/* Layout Split */}
+        <div className="flex flex-col lg:flex-row gap-16 lg:gap-24 relative">
+
+          {/* Left: Technology Categories */}
           <motion.div
-            className="fixed inset-0 z-[80] flex items-center justify-center bg-black/70 px-4 backdrop-blur-xl"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            onClick={() => setActive(null)}
+            variants={containerVariants}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, margin: "-100px" }}
+            className="flex flex-col flex-1"
           >
-            <motion.div
-              initial={{ opacity: 0, y: 30, scale: 0.96 }}
-              animate={{ opacity: 1, y: 0, scale: 1 }}
-              exit={{ opacity: 0, y: 30, scale: 0.96 }}
-              transition={{ duration: 0.25 }}
-              onClick={(event) => event.stopPropagation()}
-              className="relative w-full max-w-2xl overflow-hidden rounded-[2rem] border border-white/10 bg-slate-950/95 p-7 shadow-2xl shadow-black/50"
-            >
-              <button onClick={() => setActive(null)} className="absolute right-5 top-5 rounded-full border border-white/10 p-2 text-white/70 hover:bg-white/10" aria-label="Close tech stack modal">
-                <X size={18} />
-              </button>
-              <div className="flex items-center gap-4">
-                <div className="flex h-16 w-16 items-center justify-center rounded-2xl border border-white/10 bg-white/10 text-4xl">
-                  {active.icon}
-                </div>
-                <div>
-                  <p className="text-xs uppercase tracking-[0.3em] text-sky-200/70">Tech Area</p>
-                  <h3 className="mt-1 text-4xl font-black text-white">{active.title}</h3>
-                </div>
-              </div>
-              <p className="mt-6 leading-7 text-slate-300">{active.description}</p>
+            {groups.map((group) => {
+              const Icon = group.icon;
+              const isActive = activeGroupId === group.id;
 
-              <div className="mt-7">
-                <p className="mb-3 text-sm font-bold uppercase tracking-[0.2em] text-white/70">All Skills</p>
-                <div className="flex flex-wrap gap-2">
-                  {active.skills.map((skill) => (
-                    <span key={skill} className="rounded-full border border-white/10 bg-white/[0.06] px-3 py-2 text-sm text-slate-300">
-                      {skill}
+              return (
+                <motion.div
+                  key={group.id}
+                  variants={itemVariants}
+                  onClick={() => setActiveGroupId(isActive ? null : group.id)}
+                  className={`group relative flex flex-col py-8 transition-all duration-700 ease-out hover:py-12 sm:flex-row cursor-pointer ${isActive ? "px-6" : "px-2"}`}
+                >
+                  {/* Large Faint Background Word */}
+                  <div className="pointer-events-none absolute inset-0 -z-20 flex items-center overflow-hidden">
+                    <span className="text-[6rem] sm:text-[10rem] lg:text-[12rem] font-black uppercase leading-none tracking-tighter text-white/[0.015] transition-transform duration-700 ease-out group-hover:scale-105 group-hover:text-white/[0.03] -ml-4 sm:-ml-12">
+                      {group.name}
                     </span>
-                  ))}
-                </div>
-              </div>
+                  </div>
 
-              <div className="mt-7">
-                <p className="mb-3 text-sm font-bold uppercase tracking-[0.2em] text-white/70">Related Projects</p>
-                <div className="grid gap-2 sm:grid-cols-3">
-                  {active.projects.map((project) => (
-                    <div key={project} className="rounded-2xl border border-white/10 bg-black/25 p-4 text-sm font-semibold text-slate-300">
-                      {project}
+                  {/* Subtle Glass Blur (Active Row Only) */}
+                  <div className={`absolute inset-0 -z-10 transition-all duration-700 ease-out rounded-2xl ${isActive ? "bg-white/[0.03] backdrop-blur-md" : "opacity-0 group-hover:bg-white/[0.01]"}`} />
+
+                  {/* Animated Gradient Divider (Top) */}
+                  <div className="absolute left-0 top-0 h-[1px] w-full bg-white/5 overflow-hidden">
+                    <div className="h-full w-full -translate-x-[101%] bg-gradient-to-r from-transparent via-white/30 to-transparent transition-transform duration-1000 ease-in-out group-hover:translate-x-[101%]" />
+                  </div>
+
+                  {/* Category Title & Icon */}
+                  <div className="relative z-10 mb-8 flex w-56 shrink-0 flex-col sm:mb-0 justify-center">
+                    <div className="flex items-center gap-4 text-neutral-500 transition-colors duration-500 group-hover:text-neutral-300">
+                      <Icon className={`h-5 w-5 transition-colors duration-500 ${isActive ? "text-white" : ""}`} strokeWidth={1.5} />
+                      <h3 className={`text-xl font-medium tracking-wide transition-colors duration-500 ${isActive ? "text-white" : ""}`}>{group.name}</h3>
                     </div>
-                  ))}
-                </div>
-              </div>
-            </motion.div>
+                    {/* Hover Hint */}
+                    <div className="mt-3 flex items-center gap-2 opacity-0 -translate-x-4 transition-all duration-500 group-hover:opacity-100 group-hover:translate-x-0">
+                      <span className="text-[10px] font-semibold uppercase tracking-widest text-neutral-400">View usage</span>
+                      <ArrowRight className="h-3 w-3 text-neutral-400" />
+                    </div>
+                  </div>
+
+                  {/* Technologies List */}
+                  <div className="relative z-10 grid grid-cols-1 gap-x-12 gap-y-10 sm:grid-cols-2 flex-1">
+                    {group.technologies.map((tech) => (
+                      <div
+                        key={tech.name}
+                        className="tech-item group/tech flex items-start gap-4 transition-all duration-500 hover:-translate-y-1"
+                      >
+                        {/* Official Tech Icon (Monochrome) */}
+                        <div className="relative flex h-8 w-8 shrink-0 items-center justify-center mt-1">
+                          <img
+                            src={`https://cdn.jsdelivr.net/npm/simple-icons@v11/icons/${tech.slug}.svg`}
+                            alt={`${tech.name} icon`}
+                            className="relative z-10 h-6 w-6 opacity-40 grayscale transition-all duration-500 group-hover/tech:opacity-100 group-hover/tech:brightness-200"
+                            style={{ filter: 'invert(1)' }}
+                          />
+                        </div>
+
+                        <div className="flex w-full flex-col pt-1">
+                          {/* Name and Percentage */}
+                          <div className="flex items-baseline justify-between mb-2">
+                            <span className="text-xl font-light text-neutral-400 transition-colors duration-500 group-hover/tech:text-white">
+                              {tech.name}
+                            </span>
+                            <span className="text-[11px] font-mono text-neutral-600 transition-colors duration-500 group-hover/tech:text-neutral-300">
+                              {tech.percentage}%
+                            </span>
+                          </div>
+
+                          {/* Minimal Thin Line Progress */}
+                          <div className="h-[1px] w-full bg-white/5 overflow-hidden mb-2">
+                            <motion.div
+                              className="h-full bg-neutral-600 transition-colors duration-500 group-hover/tech:bg-neutral-200"
+                              initial={{ width: 0 }}
+                              whileInView={{ width: `${tech.percentage}%` }}
+                              viewport={{ once: true }}
+                              transition={{ duration: 1.5, ease: [0.16, 1, 0.3, 1], delay: 0.1 }}
+                            />
+                          </div>
+
+                          {/* Sub Labels */}
+                          <span className="text-[9px] font-medium uppercase tracking-widest text-neutral-600 transition-colors duration-500 group-hover/tech:text-neutral-400">
+                            {tech.label}
+                          </span>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </motion.div>
+              );
+            })}
+
+            {/* Final closing border */}
+            <motion.div variants={itemVariants} className="relative h-[1px] w-full bg-white/5 mt-4" />
           </motion.div>
-        )}
-      </AnimatePresence>
+
+          {/* Right: Dynamic Preview Panel */}
+          <div className="w-full lg:w-96 shrink-0 relative">
+            <AnimatePresence mode="wait">
+              {activeGroup ? (
+                <motion.div
+                  key={activeGroup.id}
+                  initial={{ opacity: 0, x: 20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  exit={{ opacity: 0, x: 20 }}
+                  transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
+                  className="sticky top-48 flex flex-col pt-8 lg:pt-12"
+                >
+                  <div className="mb-6 flex items-center gap-3 text-neutral-400">
+                    <activeGroup.icon strokeWidth={1.5} className="h-5 w-5" />
+                    <span className="text-sm font-medium tracking-wider uppercase">{activeGroup.name} Architecture</span>
+                  </div>
+
+                  <p className="mb-12 text-lg font-light leading-relaxed text-neutral-300">
+                    {activeGroup.description}
+                  </p>
+
+                  <div>
+                    <h4 className="mb-6 text-xs font-semibold uppercase tracking-widest text-neutral-500">
+                      Deployed Projects
+                    </h4>
+                    <ul className="space-y-5">
+                      {activeGroup.usedIn.map((project) => (
+                        <li key={project} className="group flex items-center gap-4 cursor-default">
+                          <ArrowRight className="h-4 w-4 text-neutral-600 transition-transform duration-300 group-hover:translate-x-1 group-hover:text-white" strokeWidth={1.5} />
+                          <span className="text-neutral-300 transition-colors duration-300 group-hover:text-white">{project}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                </motion.div>
+              ) : (
+                <motion.div
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                  className="sticky top-48 flex h-full items-start pt-12 text-neutral-600"
+                >
+                  <p className="text-sm font-light tracking-wide">
+                    Select an architecture layer to view deployment details.
+                  </p>
+                </motion.div>
+              )}
+            </AnimatePresence>
+          </div>
+
+        </div>
+      </div>
     </section>
   );
 }
