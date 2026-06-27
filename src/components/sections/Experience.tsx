@@ -1,5 +1,7 @@
 "use client";
 
+import Link from "next/link";
+
 import { motion } from "framer-motion";
 import { ArrowRight, Trophy, Code, Award, Target, Rocket, Briefcase, ChevronRight } from "lucide-react";
 import { useState } from "react";
@@ -164,8 +166,13 @@ export default function Experience() {
               })}
             </div>
             
-            <div className="relative z-10 mt-auto pt-6 flex items-center justify-end text-xs font-bold uppercase tracking-widest text-blue-400 opacity-0 transition-opacity group-hover:opacity-100">
-              View Records <ChevronRight size={14} className="ml-1" />
+            <div className="relative z-10 mt-auto pt-6 flex items-center justify-end">
+              <Link
+                href="/projects"
+                className="flex items-center gap-1 text-xs font-bold uppercase tracking-widest text-sky-400 opacity-0 transition-all duration-300 group-hover:opacity-100 hover:text-sky-300"
+              >
+                View Projects <ChevronRight size={14} className="ml-0.5" />
+              </Link>
             </div>
           </motion.div>
 

@@ -5,6 +5,8 @@ import { Code, ExternalLink, Lock, Sparkles, ChevronRight } from "lucide-react";
 import Image from "next/image";
 import { useState } from "react";
 
+const statathonRepo = "https://github.com/Chandu2815/STATAHON-PROJECT";
+
 const projects = [
   {
     id: "mnrg",
@@ -15,6 +17,7 @@ const projects = [
     type: "Private System",
     image: "/Portfolio.png", // Or a blurred suspenseful image
     locked: true,
+    badges: [],
     tech: ["AI Core", "Neural Networks", "Data Sync", "Growth OS"],
     links: [
       { label: "Request Early Access", url: "#contact", icon: Lock },
@@ -22,17 +25,18 @@ const projects = [
   },
   {
     id: "survey-ai",
-    title: "Survey AI",
-    status: "LIVE",
-    tagline: "MoSPI Data Portal",
+    title: "Statathon 2025",
+    status: "FEATURED",
+    tagline: "Survey AI / MoSPI Data Portal",
     description: "Government Data Intelligence Platform built for MoSPI Statathon 2025. Turns statistical data into accessible, decision-ready intelligence for research and policy teams.",
-    type: "Case Study",
+    type: "Featured Project",
     image: "/mospi-portal.png",
     locked: false,
+    badges: ["🏆 Featured Project", "🇮🇳 Built for MoSPI", "🤖 AI Powered", "🥇 National Finalist"],
     tech: ["AI", "FastAPI", "PostgreSQL", "React", "Docker"],
     links: [
       { label: "Case Study", url: "#", icon: ExternalLink },
-      { label: "GitHub", url: "https://github.com/Chandu2815/STATAHON-PROJECT", icon: Code },
+      { label: "View Repository", url: statathonRepo, icon: Code },
     ]
   },
   {
@@ -44,6 +48,7 @@ const projects = [
     type: "Internship Build",
     image: "/RapidSkill.png",
     locked: false,
+    badges: [],
     tech: ["React", "Tailwind CSS", "Framer Motion", "UI/UX", "Responsive Design"],
     links: [
       { label: "Visit Platform", url: "#", icon: ExternalLink },
@@ -58,6 +63,7 @@ const projects = [
     type: "Personal Project",
     image: "/Portfolio.png", // Using a placeholder for portfolio
     locked: false,
+    badges: [],
     tech: ["Next.js", "Framer Motion", "GSAP", "React Three Fiber"],
     links: [
       { label: "View Source", url: "#", icon: Code },
@@ -66,7 +72,7 @@ const projects = [
 ];
 
 export default function Projects() {
-  const [activeProject, setActiveProject] = useState(projects[0]);
+  const [activeProject, setActiveProject] = useState(projects[1]);
 
   return (
     <section id="projects" className="relative flex min-h-screen items-center justify-center overflow-hidden px-6 py-28">
@@ -96,12 +102,19 @@ export default function Projects() {
               
               return (
                 <div
-                  key={project.id}
-                  onMouseEnter={() => setActiveProject(project)}
-                  onClick={() => setActiveProject(project)}
+                key={project.id}
+                onMouseEnter={() => setActiveProject(project)}
+                  onClick={() => {
+                    setActiveProject(project);
+                    if (project.id === "survey-ai") {
+                      window.open(statathonRepo, "_blank", "noopener,noreferrer");
+                    }
+                  }}
                   className={`group relative cursor-pointer overflow-hidden rounded-2xl border p-5 transition-all duration-500 ${
                     isActive 
-                      ? "border-cyan-500/50 bg-cyan-950/20 shadow-[0_0_30px_rgba(34,211,238,0.15)] backdrop-blur-xl" 
+                      ? project.id === "survey-ai"
+                        ? "border-amber-300/60 bg-amber-950/15 shadow-[0_0_42px_rgba(251,191,36,0.18)] backdrop-blur-xl"
+                        : "border-cyan-500/50 bg-cyan-950/20 shadow-[0_0_30px_rgba(34,211,238,0.15)] backdrop-blur-xl" 
                       : "border-white/5 bg-white/[0.02] hover:bg-white/[0.05]"
                   }`}
                 >
@@ -109,20 +122,22 @@ export default function Projects() {
                   {isActive && (
                     <motion.div 
                       layoutId="activeTimelineBar"
-                      className="absolute left-0 top-0 h-full w-1 bg-gradient-to-b from-cyan-400 to-blue-600"
+                      className={`absolute left-0 top-0 h-full w-1 ${project.id === "survey-ai" ? "bg-gradient-to-b from-amber-200 to-orange-500" : "bg-gradient-to-b from-cyan-400 to-blue-600"}`}
                     />
                   )}
 
                   <div className="flex items-center justify-between">
                     <p className={`text-[10px] font-black uppercase tracking-widest ${
-                      isActive ? "text-cyan-400" : "text-slate-500 group-hover:text-slate-400"
+                      isActive ? project.id === "survey-ai" ? "text-amber-300" : "text-cyan-400" : "text-slate-500 group-hover:text-slate-400"
                     }`}>
                       {String(index + 1).padStart(2, "0")} // {project.type}
                     </p>
                     <span className={`rounded-full px-2 py-0.5 text-[9px] font-bold uppercase tracking-wider ${
                       project.locked 
                         ? "bg-red-500/10 text-red-400 border border-red-500/20" 
-                        : isActive ? "bg-cyan-500/10 text-cyan-400 border border-cyan-500/20" : "bg-white/5 text-slate-400 border border-white/10"
+                        : isActive
+                          ? project.id === "survey-ai" ? "bg-amber-400/10 text-amber-200 border border-amber-300/25" : "bg-cyan-500/10 text-cyan-400 border border-cyan-500/20"
+                          : "bg-white/5 text-slate-400 border border-white/10"
                     }`}>
                       {project.status}
                     </span>
@@ -133,6 +148,16 @@ export default function Projects() {
                   }`}>
                     {project.title}
                   </h3>
+
+                  {project.id === "survey-ai" && (
+                    <div className="mt-3 flex flex-wrap gap-1.5">
+                      {project.badges.map((badge) => (
+                        <span key={badge} className="rounded-full border border-amber-200/20 bg-amber-300/10 px-2 py-1 text-[9px] font-bold text-amber-100">
+                          {badge}
+                        </span>
+                      ))}
+                    </div>
+                  )}
                   
                   <div className={`mt-3 grid transition-all duration-500 ${isActive ? "grid-rows-[1fr] opacity-100" : "grid-rows-[0fr] opacity-0"}`}>
                     <div className="overflow-hidden">
@@ -161,7 +186,17 @@ export default function Projects() {
                 animate={{ opacity: 1, scale: 1, y: 0 }}
                 exit={{ opacity: 0, scale: 0.98, y: -20 }}
                 transition={{ duration: 0.4, ease: "easeOut" }}
-                className="absolute inset-0 flex flex-col overflow-hidden rounded-[2rem] border border-white/10 bg-black/40 shadow-2xl backdrop-blur-2xl"
+                whileHover={activeProject.id === "survey-ai" ? { y: -6, scale: 1.01 } : undefined}
+                onClick={() => {
+                  if (activeProject.id === "survey-ai") {
+                    window.open(statathonRepo, "_blank", "noopener,noreferrer");
+                  }
+                }}
+                className={`absolute inset-0 flex flex-col overflow-hidden rounded-[2rem] border bg-black/40 shadow-2xl backdrop-blur-2xl ${
+                  activeProject.id === "survey-ai"
+                    ? "cursor-pointer border-amber-300/35 shadow-[0_0_70px_rgba(251,191,36,.16)]"
+                    : "border-white/10"
+                }`}
               >
                 {activeProject.id === "mnrg" ? (
                   <div className="relative flex h-full flex-col overflow-hidden p-8 lg:p-10 bg-slate-950">
@@ -255,6 +290,11 @@ export default function Projects() {
                     {/* Content Section */}
                     <div className="flex flex-1 flex-col p-8 lg:p-10">
                       <div className="mb-6 flex flex-wrap gap-2">
+                        {activeProject.badges?.map((badge) => (
+                          <span key={badge} className="rounded-full border border-amber-200/20 bg-amber-300/10 px-3 py-1.5 text-xs font-bold text-amber-100 shadow-[0_0_20px_rgba(251,191,36,.08)] backdrop-blur-md">
+                            {badge}
+                          </span>
+                        ))}
                         {activeProject.tech.map((tech) => (
                           <span key={tech} className="rounded-full border border-white/10 bg-white/5 px-3 py-1 text-xs font-semibold text-slate-300 backdrop-blur-md">
                             {tech}
@@ -278,6 +318,7 @@ export default function Projects() {
                               href={link.url}
                               target={link.url.startsWith("http") ? "_blank" : undefined}
                               rel={link.url.startsWith("http") ? "noopener noreferrer" : undefined}
+                              onClick={(event) => event.stopPropagation()}
                               className={`inline-flex items-center gap-2 rounded-full border px-6 py-3 text-sm font-bold uppercase tracking-wider transition-all duration-300 hover:scale-105 ${
                                 activeProject.locked && i === 0
                                   ? "border-red-500/50 bg-red-500/10 text-red-400 hover:bg-red-500/20 hover:shadow-[0_0_20px_rgba(239,68,68,0.3)]"

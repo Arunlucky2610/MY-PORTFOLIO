@@ -1,269 +1,238 @@
 "use client";
 
-import { motion, AnimatePresence } from "framer-motion";
-import { Monitor, Server, Sparkles, Database, ArrowRight } from "lucide-react";
-import { useState } from "react";
+import { motion, useInView } from "framer-motion";
+import { useRef } from "react";
+import { Brain, Database, Monitor, Server, Zap } from "lucide-react";
 
-type Tech = {
-  name: string;
-  slug: string;
-  label: string;
-  percentage: number;
-};
+/* ─── Data ─────────────────────────────────────────────────────────────────── */
+const STATS = [
+  { value: "15+", label: "Technologies" },
+  { value: "3",   label: "AI Projects" },
+  { value: "7mo", label: "Experience" },
+  { value: "FS+AI", label: "Engineering" },
+];
 
-type TechGroup = {
+type Skill = { name: string; pct?: number };
+
+type Category = {
   id: string;
-  name: string;
+  title: string;
   icon: any;
-  technologies: Tech[];
-  usedIn: string[];
-  description: string;
+  accent: string;
+  glow: string;
+  primary: Skill[];   // shown with thin bar
+  chips: string[];    // shown as compact pills
 };
 
-const groups: TechGroup[] = [
+const CATEGORIES: Category[] = [
   {
     id: "frontend",
-    name: "Frontend",
+    title: "Frontend",
     icon: Monitor,
-    description: "Architecting fluid, component-driven interfaces with rich motion and precision styling.",
-    usedIn: ["RapidSkill", "Survey AI Dashboard", "Portfolio"],
-    technologies: [
-      { name: "React", slug: "react", label: "Primary", percentage: 90 },
-      { name: "Next.js", slug: "nextdotjs", label: "Production", percentage: 80 },
-      { name: "TypeScript", slug: "typescript", label: "Daily", percentage: 75 },
-      { name: "Tailwind", slug: "tailwindcss", label: "Daily", percentage: 90 },
-      { name: "Framer", slug: "framer", label: "Current", percentage: 80 },
+    accent: "from-cyan-500 to-blue-600",
+    glow: "rgba(56,189,248,0.20)",
+    primary: [
+      { name: "React",         pct: 95 },
+      { name: "Next.js",       pct: 90 },
+      { name: "TypeScript",    pct: 90 },
     ],
+    chips: ["Tailwind CSS", "Framer Motion", "Responsive UI"],
   },
   {
     id: "backend",
-    name: "Backend",
+    title: "Backend",
     icon: Server,
-    description: "Building resilient microservices, high-throughput APIs, and secure authentication flows.",
-    usedIn: ["Survey AI APIs", "MNRG Backend"],
-    technologies: [
-      { name: "Python", slug: "python", label: "Primary", percentage: 85 },
-      { name: "FastAPI", slug: "fastapi", label: "Production", percentage: 85 },
-      { name: "Node.js", slug: "nodedotjs", label: "Current", percentage: 75 },
+    accent: "from-emerald-500 to-teal-600",
+    glow: "rgba(52,211,153,0.20)",
+    primary: [
+      { name: "Python",  pct: 95 },
+      { name: "FastAPI", pct: 95 },
+      { name: "Node.js", pct: 80 },
     ],
+    chips: ["PostgreSQL", "SQLAlchemy", "Database Design", "REST APIs", "JWT Auth"],
   },
   {
     id: "ai",
-    name: "AI",
-    icon: Sparkles,
-    description: "Integrating large language models for autonomous decision making and data synthesis.",
-    usedIn: ["MNRG Brain", "Survey Intelligence", "Oral Health AI"],
-    technologies: [
-      { name: "OpenAI", slug: "openai", label: "Production", percentage: 75 },
-      { name: "Gemini", slug: "googlegemini", label: "Current", percentage: 75 },
+    title: "AI Engineering",
+    icon: Brain,
+    accent: "from-violet-500 to-purple-700",
+    glow: "rgba(167,139,250,0.20)",
+    primary: [
+      { name: "OpenAI API",  pct: 95 },
+      { name: "Gemini AI",   pct: 90 },
+      { name: "LangChain",   pct: 80 },
     ],
+    chips: ["Prompt Engineering", "RAG", "AI Analytics", "Computer Vision"],
   },
   {
-    id: "data",
-    name: "Data",
+    id: "devops",
+    title: "Cloud & DevOps",
     icon: Database,
-    description: "Designing structured relational models and optimized vector storage for context retrieval.",
-    usedIn: ["MoSPI Data Portal", "Survey AI Analytics"],
-    technologies: [
-      { name: "PostgreSQL", slug: "postgresql", label: "Primary", percentage: 80 },
-      { name: "Docker", slug: "docker", label: "Current", percentage: 60 },
+    accent: "from-orange-500 to-pink-600",
+    glow: "rgba(251,146,60,0.20)",
+    primary: [
+      { name: "Docker",    pct: 85 },
+      { name: "Vercel",    pct: 90 },
+      { name: "VPS/Linux", pct: 80 },
     ],
+    chips: ["GitHub", "Firebase", "Swagger/OpenAPI", "Database Management"],
   },
 ];
 
-const containerVariants = {
-  hidden: { opacity: 0 },
-  visible: {
-    opacity: 1,
-    transition: { staggerChildren: 0.15, delayChildren: 0.1 },
-  },
-};
-
-const itemVariants = {
-  hidden: { opacity: 0, y: 30 },
-  visible: { opacity: 1, y: 0, transition: { duration: 0.8, ease: [0.16, 1, 0.3, 1] } },
-};
-
-export default function Skills() {
-  const [activeGroupId, setActiveGroupId] = useState<string | null>(null);
-  const activeGroup = groups.find(g => g.id === activeGroupId);
+/* ─── Tiny Progress Bar ─────────────────────────────────────────────────────── */
+function MiniBar({ skill, accent, delay }: { skill: Skill; accent: string; delay: number }) {
+  const ref = useRef<HTMLDivElement>(null);
+  const inView = useInView(ref, { once: true, margin: "-50px" });
 
   return (
-    <section id="skills" className="flex min-h-screen items-center bg-black px-6 py-32 sm:py-48 font-sans">
-      <div className="mx-auto w-full max-w-[1400px]">
+    <div ref={ref} className="space-y-1">
+      <div className="flex items-center justify-between">
+        <span className="text-sm font-medium text-neutral-300">{skill.name}</span>
+        <span className="font-mono text-xs text-neutral-500">{skill.pct}%</span>
+      </div>
+      <div className="h-[2px] w-full overflow-hidden rounded-full bg-white/[0.06]">
+        <motion.div
+          className={`h-full rounded-full bg-gradient-to-r ${accent}`}
+          initial={{ width: 0 }}
+          animate={{ width: inView ? `${skill.pct}%` : 0 }}
+          transition={{ duration: 1, ease: [0.16, 1, 0.3, 1], delay }}
+        />
+      </div>
+    </div>
+  );
+}
+
+/* ─── Category Card ─────────────────────────────────────────────────────────── */
+function CategoryCard({ cat, index }: { cat: Category; index: number }) {
+  const Icon = cat.icon;
+
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 28 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, margin: "-80px" }}
+      transition={{ duration: 0.65, ease: [0.16, 1, 0.3, 1], delay: index * 0.08 }}
+      className="group relative flex flex-col gap-5 overflow-hidden rounded-2xl border border-white/[0.07] bg-[#0d1117]/80 p-6 backdrop-blur-xl transition-all duration-500 hover:border-white/[0.12]"
+      onMouseEnter={(e) => {
+        (e.currentTarget as HTMLDivElement).style.boxShadow = `0 0 48px ${cat.glow}`;
+      }}
+      onMouseLeave={(e) => {
+        (e.currentTarget as HTMLDivElement).style.boxShadow = "none";
+      }}
+    >
+      {/* Corner glow */}
+      <div className={`pointer-events-none absolute -right-8 -top-8 h-32 w-32 rounded-full bg-gradient-to-br ${cat.accent} opacity-[0.06] blur-2xl transition-opacity duration-500 group-hover:opacity-[0.13]`} />
+
+      {/* Header */}
+      <div className="flex items-center gap-3">
+        <div className={`flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br ${cat.accent}`}>
+          <Icon size={18} className="text-white" />
+        </div>
+        <h3 className="text-base font-bold tracking-tight text-white">{cat.title}</h3>
+        <div className="ml-auto flex items-center gap-1.5">
+          <motion.span
+            className="h-1.5 w-1.5 rounded-full bg-green-400"
+            animate={{ opacity: [1, 0.25, 1] }}
+            transition={{ duration: 2.2, repeat: Infinity }}
+          />
+          <span className="font-mono text-[9px] uppercase tracking-widest text-green-400/60">Active</span>
+        </div>
+      </div>
+
+      {/* Divider */}
+      <div className="h-px bg-white/[0.05]" />
+
+      {/* Primary skills with mini bars */}
+      <div className="flex flex-col gap-3">
+        {cat.primary.map((skill, i) => (
+          <MiniBar key={skill.name} skill={skill} accent={cat.accent} delay={i * 0.07 + index * 0.04} />
+        ))}
+      </div>
+
+      {/* Chip row */}
+      <div className="flex flex-wrap gap-2">
+        {cat.chips.map((chip) => (
+          <span
+            key={chip}
+            className="rounded-lg border border-white/[0.08] bg-white/[0.04] px-2.5 py-1 text-xs font-medium text-neutral-400 transition-colors hover:text-neutral-200"
+          >
+            {chip}
+          </span>
+        ))}
+      </div>
+    </motion.div>
+  );
+}
+
+/* ─── Section ───────────────────────────────────────────────────────────────── */
+export default function Skills() {
+  return (
+    <section id="skills" className="relative overflow-hidden bg-[#030712] px-4 py-24 sm:px-6 sm:py-32 font-sans">
+
+      {/* Ambient glows */}
+      <div className="pointer-events-none absolute inset-0">
+        <div className="absolute -left-48 top-10 h-[500px] w-[500px] rounded-full bg-sky-900/15 blur-[140px]" />
+        <div className="absolute -right-48 bottom-10 h-[500px] w-[500px] rounded-full bg-violet-900/15 blur-[140px]" />
+      </div>
+
+      <div className="relative z-10 mx-auto max-w-5xl">
 
         {/* Header */}
         <motion.div
-          initial={{ opacity: 0, y: 30 }}
+          initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: "-100px" }}
-          transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
-          className="max-w-4xl"
+          viewport={{ once: true }}
+          transition={{ duration: 0.75, ease: [0.16, 1, 0.3, 1] }}
+          className="mb-12 text-center"
         >
-          <h2 className="mb-6 text-5xl font-semibold tracking-tight text-white sm:text-7xl lg:text-8xl">
-            Technologies.
+          <div className="mb-4 inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/[0.03] px-4 py-1.5 text-xs font-medium uppercase tracking-widest text-neutral-400">
+            <Zap size={12} className="text-sky-400" />
+            Tech Ecosystem
+          </div>
+          <h2 className="text-4xl font-black tracking-tight text-white sm:text-5xl lg:text-6xl">
+            My{" "}
+            <span className="bg-gradient-to-r from-sky-400 via-blue-400 to-violet-400 bg-clip-text text-transparent">
+              Stack
+            </span>
           </h2>
-          <p className="mb-20 max-w-2xl text-xl font-light tracking-wide text-neutral-400 sm:text-3xl leading-relaxed">
-            Building thoughtful digital products with modern technologies.
+          <p className="mx-auto mt-4 max-w-lg text-base font-light text-neutral-500">
+            Tools and technologies I use to build intelligent, production-grade products.
           </p>
         </motion.div>
 
-        {/* Layout Split */}
-        <div className="flex flex-col lg:flex-row gap-16 lg:gap-24 relative">
-
-          {/* Left: Technology Categories */}
-          <motion.div
-            variants={containerVariants}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, margin: "-100px" }}
-            className="flex flex-col flex-1"
-          >
-            {groups.map((group) => {
-              const Icon = group.icon;
-              const isActive = activeGroupId === group.id;
-
-              return (
-                <motion.div
-                  key={group.id}
-                  variants={itemVariants}
-                  onClick={() => setActiveGroupId(isActive ? null : group.id)}
-                  className={`group relative flex flex-col py-8 transition-all duration-700 ease-out hover:py-12 sm:flex-row cursor-pointer ${isActive ? "px-6" : "px-2"}`}
-                >
-                  {/* Large Faint Background Word */}
-                  <div className="pointer-events-none absolute inset-0 -z-20 flex items-center overflow-hidden">
-                    <span className="text-[6rem] sm:text-[10rem] lg:text-[12rem] font-black uppercase leading-none tracking-tighter text-white/[0.015] transition-transform duration-700 ease-out group-hover:scale-105 group-hover:text-white/[0.03] -ml-4 sm:-ml-12">
-                      {group.name}
-                    </span>
-                  </div>
-
-                  {/* Subtle Glass Blur (Active Row Only) */}
-                  <div className={`absolute inset-0 -z-10 transition-all duration-700 ease-out rounded-2xl ${isActive ? "bg-white/[0.03] backdrop-blur-md" : "opacity-0 group-hover:bg-white/[0.01]"}`} />
-
-                  {/* Animated Gradient Divider (Top) */}
-                  <div className="absolute left-0 top-0 h-[1px] w-full bg-white/5 overflow-hidden">
-                    <div className="h-full w-full -translate-x-[101%] bg-gradient-to-r from-transparent via-white/30 to-transparent transition-transform duration-1000 ease-in-out group-hover:translate-x-[101%]" />
-                  </div>
-
-                  {/* Category Title & Icon */}
-                  <div className="relative z-10 mb-8 flex w-56 shrink-0 flex-col sm:mb-0 justify-center">
-                    <div className="flex items-center gap-4 text-neutral-500 transition-colors duration-500 group-hover:text-neutral-300">
-                      <Icon className={`h-5 w-5 transition-colors duration-500 ${isActive ? "text-white" : ""}`} strokeWidth={1.5} />
-                      <h3 className={`text-xl font-medium tracking-wide transition-colors duration-500 ${isActive ? "text-white" : ""}`}>{group.name}</h3>
-                    </div>
-                    {/* Hover Hint */}
-                    <div className="mt-3 flex items-center gap-2 opacity-0 -translate-x-4 transition-all duration-500 group-hover:opacity-100 group-hover:translate-x-0">
-                      <span className="text-[10px] font-semibold uppercase tracking-widest text-neutral-400">View usage</span>
-                      <ArrowRight className="h-3 w-3 text-neutral-400" />
-                    </div>
-                  </div>
-
-                  {/* Technologies List */}
-                  <div className="relative z-10 grid grid-cols-1 gap-x-12 gap-y-10 sm:grid-cols-2 flex-1">
-                    {group.technologies.map((tech) => (
-                      <div
-                        key={tech.name}
-                        className="tech-item group/tech flex items-start gap-4 transition-all duration-500 hover:-translate-y-1"
-                      >
-                        {/* Official Tech Icon (Monochrome) */}
-                        <div className="relative flex h-8 w-8 shrink-0 items-center justify-center mt-1">
-                          <img
-                            src={`https://cdn.jsdelivr.net/npm/simple-icons@v11/icons/${tech.slug}.svg`}
-                            alt={`${tech.name} icon`}
-                            className="relative z-10 h-6 w-6 opacity-40 grayscale transition-all duration-500 group-hover/tech:opacity-100 group-hover/tech:brightness-200"
-                            style={{ filter: 'invert(1)' }}
-                          />
-                        </div>
-
-                        <div className="flex w-full flex-col pt-1">
-                          {/* Name and Percentage */}
-                          <div className="flex items-baseline justify-between mb-2">
-                            <span className="text-xl font-light text-neutral-400 transition-colors duration-500 group-hover/tech:text-white">
-                              {tech.name}
-                            </span>
-                            <span className="text-[11px] font-mono text-neutral-600 transition-colors duration-500 group-hover/tech:text-neutral-300">
-                              {tech.percentage}%
-                            </span>
-                          </div>
-
-                          {/* Minimal Thin Line Progress */}
-                          <div className="h-[1px] w-full bg-white/5 overflow-hidden mb-2">
-                            <motion.div
-                              className="h-full bg-neutral-600 transition-colors duration-500 group-hover/tech:bg-neutral-200"
-                              initial={{ width: 0 }}
-                              whileInView={{ width: `${tech.percentage}%` }}
-                              viewport={{ once: true }}
-                              transition={{ duration: 1.5, ease: [0.16, 1, 0.3, 1], delay: 0.1 }}
-                            />
-                          </div>
-
-                          {/* Sub Labels */}
-                          <span className="text-[9px] font-medium uppercase tracking-widest text-neutral-600 transition-colors duration-500 group-hover/tech:text-neutral-400">
-                            {tech.label}
-                          </span>
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                </motion.div>
-              );
-            })}
-
-            {/* Final closing border */}
-            <motion.div variants={itemVariants} className="relative h-[1px] w-full bg-white/5 mt-4" />
-          </motion.div>
-
-          {/* Right: Dynamic Preview Panel */}
-          <div className="w-full lg:w-96 shrink-0 relative">
-            <AnimatePresence mode="wait">
-              {activeGroup ? (
-                <motion.div
-                  key={activeGroup.id}
-                  initial={{ opacity: 0, x: 20 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  exit={{ opacity: 0, x: 20 }}
-                  transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
-                  className="sticky top-48 flex flex-col pt-8 lg:pt-12"
-                >
-                  <div className="mb-6 flex items-center gap-3 text-neutral-400">
-                    <activeGroup.icon strokeWidth={1.5} className="h-5 w-5" />
-                    <span className="text-sm font-medium tracking-wider uppercase">{activeGroup.name} Architecture</span>
-                  </div>
-
-                  <p className="mb-12 text-lg font-light leading-relaxed text-neutral-300">
-                    {activeGroup.description}
-                  </p>
-
-                  <div>
-                    <h4 className="mb-6 text-xs font-semibold uppercase tracking-widest text-neutral-500">
-                      Deployed Projects
-                    </h4>
-                    <ul className="space-y-5">
-                      {activeGroup.usedIn.map((project) => (
-                        <li key={project} className="group flex items-center gap-4 cursor-default">
-                          <ArrowRight className="h-4 w-4 text-neutral-600 transition-transform duration-300 group-hover:translate-x-1 group-hover:text-white" strokeWidth={1.5} />
-                          <span className="text-neutral-300 transition-colors duration-300 group-hover:text-white">{project}</span>
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-                </motion.div>
-              ) : (
-                <motion.div
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  exit={{ opacity: 0 }}
-                  className="sticky top-48 flex h-full items-start pt-12 text-neutral-600"
-                >
-                  <p className="text-sm font-light tracking-wide">
-                    Select an architecture layer to view deployment details.
-                  </p>
-                </motion.div>
-              )}
-            </AnimatePresence>
-          </div>
-
+        {/* Stat strip */}
+        <div className="mb-12 grid grid-cols-2 gap-3 sm:grid-cols-4">
+          {STATS.map((s, i) => (
+            <motion.div
+              key={s.label}
+              initial={{ opacity: 0, y: 12 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.55, delay: i * 0.07, ease: [0.16, 1, 0.3, 1] }}
+              className="flex flex-col items-center gap-1 rounded-xl border border-white/[0.06] bg-white/[0.02] py-4"
+            >
+              <span className="text-2xl font-black text-white">{s.value}</span>
+              <span className="text-[10px] font-medium uppercase tracking-widest text-neutral-600">{s.label}</span>
+            </motion.div>
+          ))}
         </div>
+
+        {/* 2×2 grid */}
+        <div className="grid gap-4 sm:grid-cols-2">
+          {CATEGORIES.map((cat, i) => (
+            <CategoryCard key={cat.id} cat={cat} index={i} />
+          ))}
+        </div>
+
+        <motion.p
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          viewport={{ once: true }}
+          transition={{ duration: 1, delay: 0.5 }}
+          className="mt-10 text-center text-sm font-light text-neutral-700"
+        >
+          Building thoughtful digital products with modern technologies.
+        </motion.p>
       </div>
     </section>
   );
